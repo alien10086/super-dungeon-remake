@@ -8,6 +8,7 @@ namespace SuperDungeonRemake.UI
 		private Label _startLabel;
 		private Label _exitLabel;
 		private Sprite2D _pointer;
+		private Sprite2D _pointer2;
 		private AnimationPlayer _animationPlayer;
 		private AudioStreamPlayer2D _audioPlayer;
 		private int _selectedIndex = 0;
@@ -18,6 +19,7 @@ namespace SuperDungeonRemake.UI
 			_startLabel = GetNode<Label>("start");
 			_exitLabel = GetNode<Label>("exit");
 			_pointer = GetNode<Sprite2D>("Pointer");
+			_pointer2 = GetNode<Sprite2D>("Pointer2");
 			_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 			_audioPlayer = GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D");
 			
@@ -49,19 +51,20 @@ namespace SuperDungeonRemake.UI
 			if (_selectedIndex == 0)
 			{
 				// start选项位置 - 对应start标签的Y位置
-				var new_pointer = _pointer.Position;
-
-				new_pointer.Y = 988;
-				_pointer.Position = new_pointer; 
+				_pointer2.Visible = false;
+				_pointer.Visible = true;
+				// _animationPlayer.Stop();
+				_exitLabel.LabelSettings.FontColor = Colors.White;
 				_animationPlayer.Play("selected");
+			
 			}
 			else
 			{
-				// exit选项位置 - 对应exit标签的Y位置
-				var new_pointer = _pointer.Position;
-				new_pointer.Y = 1092;
-				_pointer.Position = new_pointer;
-				_animationPlayer.Play("selected");
+				_pointer.Visible = false;
+				_pointer2.Visible = true;
+				// _animationPlayer.Stop();
+				_startLabel.LabelSettings.FontColor = Colors.White;
+				_animationPlayer.Play("secected2");
 			}
 		}
 

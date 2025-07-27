@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://crcy8y1rhj83w"]
+[gd_scene load_steps=15 format=3 uid="uid://crcy8y1rhj83w"]
 
 [ext_resource type="Script" uid="uid://clc4stnw8u2as" path="res://Scripts/UI/StartMenu.cs" id="1_0hdqv"]
 [ext_resource type="Texture2D" uid="uid://u3odt4uttslo" path="res://Assets/splash/title.png" id="2_u4h61"]
@@ -10,6 +10,9 @@
 [ext_resource type="AudioStream" uid="uid://dl6dfbhkbv4ti" path="res://Assets/music/title.wav" id="8_n83xm"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dibtv"]
+font_size = 50
+
+[sub_resource type="LabelSettings" id="LabelSettings_u4h61"]
 font_size = 50
 
 [sub_resource type="Animation" id="Animation_dibtv"]
@@ -71,10 +74,62 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pointer2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(534, 823)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("exit:label_settings:font_color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_u4h61"]
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pointer2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3, 0.7667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(534, 823), Vector2(560, 823)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("exit:label_settings:font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2333, 0.8667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 0.282353, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_o42a4"]
 _data = {
 &"RESET": SubResource("Animation_o6asp"),
+&"secected2": SubResource("Animation_u4h61"),
 &"selected": SubResource("Animation_dibtv")
 }
 
@@ -134,11 +189,19 @@ offset_bottom = -182.0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 50
 text = "退出"
+label_settings = SubResource("LabelSettings_u4h61")
 vertical_alignment = 1
 
 [node name="Pointer" type="Sprite2D" parent="."]
 position = Vector2(500, 709)
 scale = Vector2(12.0625, 9.25)
+texture = ExtResource("3_ij777")
+centered = false
+
+[node name="Pointer2" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(534, 823)
+scale = Vector2(12, 9.25)
 texture = ExtResource("3_ij777")
 centered = false
 
