@@ -127,7 +127,7 @@ public partial class PlayerController : CharacterBody2D
     {
         // Light flicker effect
         var time = Time.GetUnixTimeFromSystem();
-        _light.TextureScale = 0.19f + (Mathf.Cos((float)time * 9) * 0.005f);
+        // Note: TextureScale is not available in Godot 4 Light2D
         _light.Energy = 2.4f + (Mathf.Cos((float)time * 2) * 0.2f);
     }
     
@@ -135,8 +135,10 @@ public partial class PlayerController : CharacterBody2D
     {
         if (WeaponScene == null) return;
         
-        var weapon = WeaponScene.Instantiate();
-        weapon.AddToGroup(GlobalConstants.GroupWeapons);
+        var weapon = WeaponScene.Instantiate() as Node2D;
+        if (weapon == null) return;
+        
+        weapon.AddToGroup(GlobalConstants.GroupNames.PROJECTILE);
         
         // Position weapon based on attack direction
         if (_attackDirection.X > 0)
@@ -209,7 +211,7 @@ public partial class PlayerController : CharacterBody2D
     {
         var collisionDirection = (Position - body.Position).Normalized();
         
-        if (body.IsInGroup(GlobalConstants.GroupMonsters))
+        if (body.IsInGroup(GlobalConstants.GroupNames.ENEMY))
         {
             // Set monster hit time if it has this property
             if (body.HasMethod("SetHitPlayerTime"))
@@ -230,7 +232,7 @@ public partial class PlayerController : CharacterBody2D
             TakeDamage(collisionDirection, damage, factor);
         }
         
-        if (body.IsInGroup(GlobalConstants.GroupProjectiles))
+        if (body.IsInGroup(GlobalConstants.GroupNames.PROJECTILE))
         {
             var damage = body.Get("damage").AsSingle();
             var factor = body.Get("factor").AsSingle();

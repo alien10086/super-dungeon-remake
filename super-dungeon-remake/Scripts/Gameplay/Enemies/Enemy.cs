@@ -30,7 +30,7 @@ namespace SuperDungeonRemake.Gameplay.Enemies
             _healthBar.Value = _currentHealth;
             _targetPosition = GlobalPosition;
             
-            AddToGroup(GlobalConstants.GroupNames.Enemies);
+            AddToGroup(GlobalConstants.GroupNames.ENEMIES);
         }
         
         public override void _PhysicsProcess(double delta)
@@ -44,7 +44,7 @@ namespace SuperDungeonRemake.Gameplay.Enemies
         protected virtual void UpdateMovement(double delta)
         {
             // 基础AI：朝向玩家移动
-            var player = GetTree().GetFirstNodeInGroup(GlobalConstants.GroupNames.Player);
+            var player = GetTree().GetFirstNodeInGroup(GlobalConstants.GroupNames.PLAYER);
             if (player != null)
             {
                 var playerPos = ((Node2D)player).GlobalPosition;
@@ -113,7 +113,7 @@ namespace SuperDungeonRemake.Gameplay.Enemies
         public virtual void OnAreaEntered(Area2D area)
         {
             // 处理与玩家攻击区域的碰撞
-            if (area.GetParent().IsInGroup(GlobalConstants.GroupNames.Player))
+            if (area.GetParent().IsInGroup(GlobalConstants.GroupNames.PLAYER))
             {
                 TakeDamage(20); // 默认玩家攻击伤害
             }
