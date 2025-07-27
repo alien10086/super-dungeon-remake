@@ -1,7 +1,6 @@
 using Godot;
-using SuperDungeonRemake.Core;
 
-namespace SuperDungeonRemake.UI
+namespace SuperDungeonRemake.Scripts.UI
 {
 	public partial class StartMenu : Control
 	{
@@ -64,7 +63,7 @@ namespace SuperDungeonRemake.UI
 				_pointer2.Visible = true;
 				// _animationPlayer.Stop();
 				_startLabel.LabelSettings.FontColor = Colors.White;
-				_animationPlayer.Play("secected2");
+				_animationPlayer.Play("selected2");
 			}
 		}
 
