@@ -22,11 +22,11 @@ namespace SuperDungeonRemake.UI
 			_audioPlayer = GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D");
 			
 			// 播放背景音乐
-			// _audioPlayer.Play();
+			_audioPlayer.Play();
 			
 			// 播放选中动画
-			// _animationPlayer.Play("selected");
-			GD.Print("666666");
+			_animationPlayer.Play("selected");
+			// GD.Print("666666");
 		}
 
 		private void OnStartSelected()
@@ -44,10 +44,13 @@ namespace SuperDungeonRemake.UI
 		{
 			// 根据选中的选项更新指针位置
 			GD.Print(_selectedIndex);
+
+			GD.Print(_pointer.Position);
 			if (_selectedIndex == 0)
 			{
 				// start选项位置 - 对应start标签的Y位置
 				var new_pointer = _pointer.Position;
+
 				new_pointer.Y = 988;
 				_pointer.Position = new_pointer; 
 				_animationPlayer.Play("selected");
@@ -64,7 +67,7 @@ namespace SuperDungeonRemake.UI
 
 		public override void _Input(InputEvent @event)
 		{
-			GD.Print(@event.AsText());
+			// GD.Print(@event.AsText());
 			// GD.Print(666666);
 			if (@event.IsActionPressed("move_up"))
 			{
