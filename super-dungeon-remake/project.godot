@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Super Dungeon Delve Remake"
+run/main_scene="uid://crcy8y1rhj83w"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 boot_splash/fullsize=false
 boot_splash/image="res://Assets/splash/boot.png"

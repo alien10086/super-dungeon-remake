@@ -22,10 +22,11 @@ namespace SuperDungeonRemake.UI
 			_audioPlayer = GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D");
 			
 			// 播放背景音乐
-			_audioPlayer.Play();
+			// _audioPlayer.Play();
 			
 			// 播放选中动画
-			_animationPlayer.Play("selected");
+			// _animationPlayer.Play("selected");
+			GD.Print("666666");
 		}
 
 		private void OnStartSelected()
@@ -42,26 +43,35 @@ namespace SuperDungeonRemake.UI
 		private void UpdatePointerPosition()
 		{
 			// 根据选中的选项更新指针位置
+			GD.Print(_selectedIndex);
 			if (_selectedIndex == 0)
 			{
-				_pointer.Position = new Vector2(500, 709); // start选项位置
+				// start选项位置 - 对应start标签的Y位置
+				var new_pointer = _pointer.Position;
+				new_pointer.Y = 988;
+				_pointer.Position = new_pointer; 
 				_animationPlayer.Play("selected");
 			}
 			else
 			{
-				_pointer.Position = new Vector2(500, 813); // exit选项位置
-				_animationPlayer.Stop();
+				// exit选项位置 - 对应exit标签的Y位置
+				var new_pointer = _pointer.Position;
+				new_pointer.Y = 1092;
+				_pointer.Position = new_pointer;
+				_animationPlayer.Play("selected");
 			}
 		}
 
 		public override void _Input(InputEvent @event)
 		{
-			if (@event.IsActionPressed("ui_up"))
+			GD.Print(@event.AsText());
+			// GD.Print(666666);
+			if (@event.IsActionPressed("move_up"))
 			{
 				_selectedIndex = (_selectedIndex - 1 + _menuOptions.Length) % _menuOptions.Length;
 				UpdatePointerPosition();
 			}
-			else if (@event.IsActionPressed("ui_down"))
+			else if (@event.IsActionPressed("move_down"))
 			{
 				_selectedIndex = (_selectedIndex + 1) % _menuOptions.Length;
 				UpdatePointerPosition();
