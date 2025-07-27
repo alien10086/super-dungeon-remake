@@ -1,65 +1,175 @@
-[gd_scene load_steps=2 format=3 uid="uid://fqxvyxkwqwqxz"]
+[gd_scene load_steps=13 format=3 uid="uid://crcy8y1rhj83w"]
 
-[ext_resource type="Script" path="res://Scripts/UI/StartMenu.cs" id="1_0hdqv"]
+[ext_resource type="Script" uid="uid://clc4stnw8u2as" path="res://Scripts/UI/StartMenu.cs" id="1_0hdqv"]
+[ext_resource type="Texture2D" uid="uid://u3odt4uttslo" path="res://Assets/splash/title.png" id="2_u4h61"]
+[ext_resource type="Texture2D" uid="uid://i53u8trwm07a" path="res://Assets/ui/pointer.png" id="3_ij777"]
+[ext_resource type="Texture2D" uid="uid://b32o3fr60t45f" path="res://Assets/Sprites/player/knight_m_idle_anim_f0.png" id="4_kk3wy"]
+[ext_resource type="Texture2D" uid="uid://bbv2bhaeg67l3" path="res://Assets/misc/coin.png" id="5_dyi3g"]
+[ext_resource type="Texture2D" uid="uid://cyhl15ifmgelr" path="res://Assets/misc/potion.png" id="6_ugtp5"]
+[ext_resource type="Texture2D" uid="uid://bpi3sle6tr2if" path="res://Assets/misc/chest.png" id="7_cyf88"]
+[ext_resource type="AudioStream" uid="uid://dl6dfbhkbv4ti" path="res://Assets/music/title.wav" id="8_n83xm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dibtv"]
+font_size = 50
+
+[sub_resource type="Animation" id="Animation_dibtv"]
+resource_name = "pointer_mover"
+loop_mode = 1
+markers = [{
+"color": Color(1, 0.517647, 1, 1),
+"name": &"new_marker",
+"time": 0.8
+}]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pointer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3, 0.766667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(500, 709), Vector2(560, 709)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("start:label_settings:font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.233333, 0.866667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 0.282353, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_o6asp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pointer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(500, 709)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("start:label_settings:font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o42a4"]
+_data = {
+&"RESET": SubResource("Animation_o6asp"),
+&"selected": SubResource("Animation_dibtv")
+}
 
 [node name="StartMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
 script = ExtResource("1_0hdqv")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="background" type="Sprite2D" parent="."]
+position = Vector2(956.5, 672)
+scale = Vector2(1.283, 1.2)
+texture = ExtResource("2_u4h61")
+
+[node name="VersionLabel" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color(0.145098, 0.0745098, 0.101961, 1)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -100.0
-offset_right = 150.0
-offset_bottom = 100.0
-
-[node name="Title" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-text = "Super Dungeon Delve"
-horizontal_alignment = 1
-
-[node name="Subtitle" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-text = "Remake"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="StartButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Start Game"
-
-[node name="QuitButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Quit"
-
-[node name="Instructions" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -200.0
-offset_top = -100.0
-offset_right = 200.0
-offset_bottom = -20.0
-text = "WASD/Arrow Keys: Move\nZ/Space/Enter: Attack\nEscape: Pause\n0: Screenshot"
-horizontal_alignment = 1
+offset_left = -2.0
+offset_top = -69.0
+offset_right = 138.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.288518, 0.288518, 0.288518, 1)
+theme_override_font_sizes/font_size = 50
+text = "v1.0.1"
 vertical_alignment = 1
+
+[node name="start" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 781.0
+offset_top = -356.0
+offset_right = 981.0
+offset_bottom = -286.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 50
+text = "进入地牢"
+label_settings = SubResource("LabelSettings_dibtv")
+vertical_alignment = 1
+
+[node name="exit" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 786.0
+offset_top = -252.0
+offset_right = 926.0
+offset_bottom = -182.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 50
+text = "退出"
+vertical_alignment = 1
+
+[node name="Pointer" type="Sprite2D" parent="."]
+position = Vector2(500, 709)
+scale = Vector2(12.0625, 9.25)
+texture = ExtResource("3_ij777")
+centered = false
+
+[node name="knight" type="Sprite2D" parent="."]
+position = Vector2(56, 392)
+scale = Vector2(19.67, 19.67)
+texture = ExtResource("4_kk3wy")
+centered = false
+
+[node name="coin" type="Sprite2D" parent="."]
+position = Vector2(1600, 594)
+scale = Vector2(16.8125, 16.8125)
+texture = ExtResource("5_dyi3g")
+centered = false
+
+[node name="potion" type="Sprite2D" parent="."]
+position = Vector2(1553, 835)
+scale = Vector2(13, 13)
+texture = ExtResource("6_ugtp5")
+centered = false
+
+[node name="chest" type="Sprite2D" parent="."]
+position = Vector2(1411, 724)
+scale = Vector2(11.4375, 11.4375)
+texture = ExtResource("7_cyf88")
+centered = false
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_n83xm")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_o42a4")
+}
