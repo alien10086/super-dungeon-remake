@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://dqxvyxkwqwqxz"]
+
+[ext_resource type="Script" path="res://Scripts/Gameplay/Player/PlayerController.cs" id="1_0hdqv"]
+[ext_resource type="Texture2D" uid="uid://bqxvyxkwqwqxa" path="res://Assets/sprites/player.png" id="2_1hdqw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1hdqx"]
+size = Vector2(32, 32)
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_0hdqv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_1hdqw")
+hframes = 4
+vframes = 4
+frame = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1hdqx")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 1.0
+texture = preload("res://Assets/light/light.png")
+texture_scale = 2.0
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="AttackCollision" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("RectangleShape2D_1hdqx")
+disabled = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
