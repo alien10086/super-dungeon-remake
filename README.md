@@ -1,5 +1,12 @@
 # Super Dungeon Delve Remake
 
+![Godot Engine](https://img.shields.io/badge/Godot-4.4-blue?logo=godot-engine&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-.NET%208.0-purple?logo=csharp&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Game Genre](https://img.shields.io/badge/Genre-Roguelike%20%7C%20Dungeon%20Crawler-orange)
+![Development Status](https://img.shields.io/badge/Status-In%20Development-yellow)
+
 ## 项目简介
 
 这是一个基于 [benc-uk/super-dungeon-delve](https://github.com/benc-uk/super-dungeon-delve) 项目的学习性复刻版本。<mcreference link="https://github.com/benc-uk/super-dungeon-delve" index="0">0</mcreference> 原项目是一个使用 Godot 引擎开发的复古风格 2D 地牢探索游戏，本项目在此基础上进行了重新实现，主要用于学习现代游戏开发技术。
