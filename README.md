@@ -9,7 +9,7 @@
 
 ## 项目简介
 
-这是一个基于 [benc-uk/super-dungeon-delve](https://github.com/benc-uk/super-dungeon-delve) 项目的学习性复刻版本。<mcreference link="https://github.com/benc-uk/super-dungeon-delve" index="0">0</mcreference> 原项目是一个使用 Godot 引擎开发的复古风格 2D 地牢探索游戏，本项目在此基础上进行了重新实现，主要用于学习现代游戏开发技术。
+这是一个基于 [benc-uk/super-dungeon-delve](https://github.com/benc-uk/super-dungeon-delve) 项目的学习性复刻版本。原项目是一个使用 Godot 引擎开发的复古风格 2D 地牢探索游戏，本项目在此基础上进行了重新实现，主要用于学习现代游戏开发技术。
 
 游戏采用经典的 Roguelike 风格，玩家需要在随机生成的地牢中探索、战斗和收集宝物。
 
