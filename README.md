@@ -75,7 +75,7 @@ super-dungeon-remake/
 
 ## 开发目标
 
-这个项目旨在通过复刻经典地牢探索游戏来学习现代游戏开发技术。<mcreference link="https://github.com/benc-uk/super-dungeon-delve" index="0">0</mcreference> 通过使用 Godot 引擎和 C#，项目展示了如何构建一个完整的 2D 游戏，包括:
+这个项目旨在通过复刻经典地牢探索游戏来学习现代游戏开发技术。 通过使用 Godot 引擎和 C#，项目展示了如何构建一个完整的 2D 游戏，包括:
 
 - 模块化的代码架构
 - 可扩展的游戏系统
@@ -92,7 +92,7 @@ super-dungeon-remake/
 
 ## 致谢
 
-本项目基于 [benc-uk/super-dungeon-delve](https://github.com/benc-uk/super-dungeon-delve) 进行学习性复刻。<mcreference link="https://github.com/benc-uk/super-dungeon-delve" index="0">0</mcreference> 感谢原作者提供了优秀的开源项目作为学习参考。
+本项目基于 [benc-uk/super-dungeon-delve](https://github.com/benc-uk/super-dungeon-delve) 进行学习性复刻。 感谢原作者提供了优秀的开源项目作为学习参考。
 
 **原项目技术栈：**
 - Godot 3.x 引擎
