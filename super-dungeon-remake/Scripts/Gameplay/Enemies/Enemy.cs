@@ -1,122 +1,78 @@
 using Godot;
+using SuperDungeonRemake.Gameplay.Enemies;
 using SuperDungeonRemake.Utils;
 
 namespace SuperDungeonRemake.Gameplay.Enemies
 {
-    public partial class Enemy : CharacterBody2D
+    /// <summary>
+    /// 具体的敌人实现类
+    /// 继承自BaseEnemy，可以进一步自定义特定敌人的行为
+    /// </summary>
+    public partial class Enemy : BaseEnemy
     {
-        [Export] public float Speed { get; set; } = 50.0f;
-        [Export] public int MaxHealth { get; set; } = 50;
-        [Export] public int Damage { get; set; } = 10;
-        [Export] public int GoldValue { get; set; } = 5;
-        
-        protected int _currentHealth;
-        protected Sprite2D _sprite;
-        protected AnimationPlayer _animationPlayer;
-        protected AudioStreamPlayer2D _audioPlayer;
-        protected ProgressBar _healthBar;
-        protected Vector2 _targetPosition;
-        protected bool _isDead = false;
-        
+        #region Godot Lifecycle
         public override void _Ready()
         {
-            _sprite = GetNode<Sprite2D>("Sprite2D");
-            _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-            _audioPlayer = GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D");
-            _healthBar = GetNode<ProgressBar>("HealthBar");
+            // 调用基类的初始化
+            base._Ready();
             
-            _currentHealth = MaxHealth;
-            _healthBar.MaxValue = MaxHealth;
-            _healthBar.Value = _currentHealth;
-            _targetPosition = GlobalPosition;
-            
-            AddToGroup(GlobalConstants.GroupNames.ENEMIES);
+            // 可以在这里添加特定敌人的初始化逻辑
+            SetupSpecificBehavior();
         }
+        #endregion
         
-        public override void _PhysicsProcess(double delta)
+        #region Specific Behavior
+        /// <summary>
+        /// 设置特定敌人的行为
+        /// </summary>
+        private void SetupSpecificBehavior()
         {
-            if (_isDead) return;
-            
-            UpdateMovement(delta);
-            UpdateHealthBar();
-        }
-        
-        protected virtual void UpdateMovement(double delta)
-        {
-            // 基础AI：朝向玩家移动
-            var player = GetTree().GetFirstNodeInGroup(GlobalConstants.GroupNames.PLAYER);
-            if (player != null)
+            // 根据敌人类型设置特殊行为
+            switch (Type)
             {
-                var playerPos = ((Node2D)player).GlobalPosition;
-                var direction = (playerPos - GlobalPosition).Normalized();
-                Velocity = direction * Speed;
-                MoveAndSlide();
+                case EnemyType.Goblin:
+                    SetupGoblinBehavior();
+                    break;
+                case EnemyType.Skeleton:
+                    SetupSkeletonBehavior();
+                    break;
+                case EnemyType.Slime:
+                    SetupSlimeBehavior();
+                    break;
+                case EnemyType.Orc:
+                    SetupOrcBehavior();
+                    break;
             }
         }
         
-        protected void UpdateHealthBar()
+        private void SetupGoblinBehavior()
         {
-            _healthBar.Value = _currentHealth;
-            _healthBar.Visible = _currentHealth < MaxHealth;
+            // 哥布林更加敏捷，巡逻范围更小
+            PatrolRadius = 40f;
+            StateChangeInterval = 1.5f;
         }
         
-        public virtual void TakeDamage(int damage)
+        private void SetupSkeletonBehavior()
         {
-            if (_isDead) return;
-            
-            _currentHealth -= damage;
-            
-            if (_currentHealth <= 0)
-            {
-                Die();
-            }
-            else
-            {
-                // 播放受伤动画
-                PlayHurtAnimation();
-            }
+            // 骷髅更有纪律，巡逻时间更长
+            PatrolRadius = 60f;
+            StateChangeInterval = 3f;
         }
         
-        protected virtual void PlayHurtAnimation()
+        private void SetupSlimeBehavior()
         {
-            // 简单的受伤效果：闪烁
-            var tween = CreateTween();
-            tween.TweenProperty(_sprite, "modulate:a", 0.5f, 0.1f);
-            tween.TweenProperty(_sprite, "modulate:a", 1.0f, 0.1f);
+            // 史莱姆移动更随机
+            PatrolRadius = 30f;
+            StateChangeInterval = 1f;
         }
         
-        protected virtual void Die()
+        private void SetupOrcBehavior()
         {
-            _isDead = true;
-            
-            // 更新游戏数据
-            var gameData = GetNode<GameData>("/root/GameData");
-            gameData.AddGold(GoldValue);
-            gameData.AddKill();
-            
-            // 播放死亡动画和音效
-            PlayDeathAnimation();
-            
-            // 延迟删除节点
-            var timer = GetTree().CreateTimer(0.5f);
-            timer.Timeout += QueueFree;
+            // 兽人更加谨慎，巡逻范围大
+            PatrolRadius = 80f;
+            StateChangeInterval = 4f;
+            FleeHealthThreshold = 0.2f; // 更低的逃跑阈值
         }
-        
-        protected virtual void PlayDeathAnimation()
-        {
-            // 简单的死亡效果：缩放消失
-            var tween = CreateTween();
-            tween.Parallel().TweenProperty(this, "scale", Vector2.Zero, 0.3f);
-            tween.Parallel().TweenProperty(_sprite, "modulate:a", 0.0f, 0.3f);
-        }
-        
-        public virtual void OnAreaEntered(Area2D area)
-        {
-            // 处理与玩家攻击区域的碰撞
-            if (area.GetParent().IsInGroup(GlobalConstants.GroupNames.PLAYER))
-            {
-                TakeDamage(20); // 默认玩家攻击伤害
-            }
-        }
+        #endregion
     }
 }

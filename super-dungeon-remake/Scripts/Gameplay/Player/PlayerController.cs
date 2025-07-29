@@ -1,28 +1,29 @@
 using Godot;
 using SuperDungeonRemake.Utils;
+using SuperDungeonRemake.Core.Abstract;
+using SuperDungeonRemake.Core.Interfaces;
 
 namespace SuperDungeonRemake.Gameplay.Player;
 
-public partial class PlayerController : CharacterBody2D
+/// <summary>
+/// 玩家控制器类
+/// 继承自CombatEntity，实现玩家特有的功能
+/// </summary>
+public partial class PlayerController : CombatEntity
 {
-    [Export] public float Speed { get; set; } = 100f;
-    [Export] public int MaxHealth { get; set; } = 100;
-    [Export] public float AttackCooldown { get; set; } = 0.5f;
-    [Export] public float WeaponDamage { get; set; } = 10f;
-    [Export] public PackedScene WeaponScene { get; set; }
+    [Export] public float RecoilDuration { get; set; } = 0.2f;
+    [Export] public float CameraZoomFactor { get; set; } = 1.0f;
     
     [Signal]
-    public delegate void HealthChangedEventHandler(int newHealth);
+    public delegate void HealthChangedEventHandler(int currentHealth, int maxHealth);
+    [Signal]
+    public delegate void GoldChangedEventHandler(int newGold);
     
-    public int CurrentHealth { get; private set; }
+    private Vector2 _inputDirection;
+    private float _recoilTime;
+    private Vector2 _recoilDirection;
+    private Vector2 _attackDirection;
     
-    private Vector2 _lastDirection = Vector2.Right;
-    private Vector2 _attackDirection = Vector2.Right;
-    private float _attackTimer = 0f;
-    private float _recoilTime = 0f;
-    private Vector2 _recoilDirection = Vector2.Zero;
-    
-    private AnimatedSprite2D _sprite;
     private Camera2D _camera;
     private Light2D _light;
     private Area2D _hitbox;
@@ -30,85 +31,148 @@ public partial class PlayerController : CharacterBody2D
     private AudioStreamPlayer2D _painSfx;
     private AudioStreamPlayer2D _swipeSfx;
     
-    private RandomNumberGenerator _rng;
+    private int _currentGold;
     
-    public override void _Ready()
+    #region Godot Lifecycle
+    protected override void InitializeEntity()
     {
-        CurrentHealth = MaxHealth;
-        _rng = new RandomNumberGenerator();
-        _rng.Randomize();
+        base.InitializeEntity();
         
-        // Get node references
-        _sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-        _camera = GetNode<Camera2D>("Camera2D");
-        _light = GetNode<Light2D>("Light2D");
-        _hitbox = GetNode<Area2D>("Hitbox");
-        _footstepSfx = GetNode<AudioStreamPlayer2D>("SfxFootstep");
-        _painSfx = GetNode<AudioStreamPlayer2D>("SfxPain");
-        _swipeSfx = GetNode<AudioStreamPlayer2D>("SfxSwipe");
-        
-        // Connect signals
-        _hitbox.BodyEntered += OnHitboxBodyEntered;
-        _sprite.FrameChanged += OnSpriteFrameChanged;
-        
-        // Set up camera zoom based on screen DPI
-        var zoomFactor = DisplayServer.ScreenGetDpi() / 480.0f;
-        _camera.Zoom = new Vector2(zoomFactor, zoomFactor);
-        
-        EmitSignal(SignalName.HealthChanged, CurrentHealth);
+        AddToGroup(GlobalConstants.GroupNames.PLAYER);
+        _currentGold = 0;
     }
     
-    public override void _PhysicsProcess(double delta)
+    protected override void SetupComponents()
     {
-        _attackTimer -= (float)delta;
-        _recoilTime -= (float)delta;
+        base.SetupComponents();
         
-        HandleMovement();
-        HandleAttack();
-        HandleAnimation();
-        UpdateLight(delta);
+        _camera = GetNodeOrNull<Camera2D>("Camera2D");
+        _light = GetNodeOrNull<Light2D>("Light2D");
+        _hitbox = GetNodeOrNull<Area2D>("Hitbox");
+        _footstepSfx = GetNodeOrNull<AudioStreamPlayer2D>("SfxFootstep");
+        _painSfx = GetNodeOrNull<AudioStreamPlayer2D>("SfxPain");
+        _swipeSfx = GetNodeOrNull<AudioStreamPlayer2D>("SfxSwipe");
+        
+        SetupCamera();
     }
     
-    private void HandleMovement()
+    /// <summary>
+    /// 设置摄像机
+    /// </summary>
+    private void SetupCamera()
     {
-        var direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-        
-        if (direction != Vector2.Zero)
+        if (_camera != null)
         {
-            _attackDirection = direction;
+            _camera.Zoom = Vector2.One * CameraZoomFactor;
+            _camera.Enabled = true;
+        }
+    }
+    
+    protected override void ConnectSignals()
+    {
+        base.ConnectSignals();
+        
+        if (_hitbox != null)
+        {
+            _hitbox.BodyEntered += OnHitboxBodyEntered;
         }
         
-        // Apply recoil if active
+        if (_sprite != null)
+        {
+            _sprite.FrameChanged += OnSpriteFrameChanged;
+        }
+        
+        // 连接生命值变化事件
+        HealthChanged += (current, max) => EmitSignal(SignalName.HealthChanged, current, max);
+    }
+    
+    public override void _Input(InputEvent @event)
+    {
+        HandleInput(@event);
+    }
+    #endregion
+    
+    protected override void UpdateEntity(double delta)
+    {
+        base.UpdateEntity(delta);
+        
+        UpdateRecoil(delta);
+        UpdateLight(delta);
+        HandlePlayerInput();
+        HandleAnimation();
+    }
+    
+    protected override void HandleMovement(double delta)
+    {
+        // 获取输入方向
+        _inputDirection = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+        
+        // 如果在后坐力状态中，使用后坐力方向
         if (_recoilTime > 0)
         {
-            direction = _recoilDirection;
-        }
-        
-        if (direction != Vector2.Zero)
-        {
-            _lastDirection = direction;
-            Velocity = direction * Speed;
+            Direction = _recoilDirection;
         }
         else
         {
-            Velocity = Vector2.Zero;
+            Direction = _inputDirection;
+            
+            // 更新攻击方向
+            if (_inputDirection != Vector2.Zero)
+            {
+                _lastAttackDirection = _inputDirection;
+            }
         }
         
-        MoveAndSlide();
+        base.HandleMovement(delta);
     }
     
-    private void HandleAttack()
+    #region Player Input Handling
+    /// <summary>
+    /// 处理输入事件
+    /// </summary>
+    /// <param name="event">输入事件</param>
+    private void HandleInput(InputEvent @event)
     {
-        if (Input.IsActionPressed("attack") && _attackTimer <= 0f)
+        // 处理特殊输入（如暂停、截图等）
+        if (@event.IsActionPressed("pause"))
         {
-            Attack();
+            // 暂停游戏逻辑
+        }
+        
+        if (@event.IsActionPressed("screenshot"))
+        {
+            // 截图逻辑
         }
     }
     
+    /// <summary>
+    /// 处理玩家输入
+    /// </summary>
+    private void HandlePlayerInput()
+    {
+        // 处理攻击输入
+        if (Input.IsActionPressed("attack") && CanAttack)
+        {
+            AttackInDirection(_lastAttackDirection);
+        }
+    }
+    #endregion
+    
+    #region Animation and Visual Effects
+    /// <summary>
+    /// 处理动画逻辑
+    /// </summary>
     private void HandleAnimation()
     {
-        _sprite.FlipH = _lastDirection.X < 0;
+        if (_sprite == null) return;
         
+        // 根据移动方向翻转精灵
+        if (_lastAttackDirection.X != 0)
+        {
+            _sprite.FlipH = _lastAttackDirection.X < 0;
+        }
+        
+        // 根据状态播放动画
         if (_recoilTime > 0)
         {
             _sprite.Play("hit");
@@ -251,4 +315,21 @@ public partial class PlayerController : CharacterBody2D
             _footstepSfx.Play();
         }
     }
+    
+    /// <summary>
+    /// 更新后坐力效果
+    /// </summary>
+    /// <param name="delta">帧时间</param>
+    private void UpdateRecoil(double delta)
+    {
+        if (_recoilTime > 0)
+        {
+            _recoilTime -= (float)delta;
+            if (_recoilTime <= 0)
+            {
+                _recoilDirection = Vector2.Zero;
+            }
+        }
+    }
+    #endregion
 }
