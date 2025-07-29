@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dqxvyxkwqwqxz"]
+[gd_scene load_steps=5 format=3 uid="uid://dqxvyxkwqwqx0"]
 
-[ext_resource type="Script" path="res://Scripts/Gameplay/Player/PlayerController.cs" id="1_0hdqv"]
-[ext_resource type="Texture2D" uid="uid://bqxvyxkwqwqxa" path="res://Assets/sprites/player.png" id="2_1hdqw"]
+[ext_resource type="Script" uid="uid://sq6ksa36madt" path="res://Scripts/Gameplay/Player/PlayerController.cs" id="1_0hdqv"]
+[ext_resource type="Texture2D" uid="uid://b32o3fr60t45f" path="res://Assets/Sprites/player/knight_m_idle_anim_f0.png" id="2_1hdqw"]
+[ext_resource type="Texture2D" uid="uid://b08sdomc23nr4" path="res://Assets/efx/light.png" id="3_gntrk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1hdqx"]
 size = Vector2(32, 32)
@@ -13,7 +14,6 @@ script = ExtResource("1_0hdqv")
 texture = ExtResource("2_1hdqw")
 hframes = 4
 vframes = 4
-frame = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_1hdqx")
@@ -21,8 +21,7 @@ shape = SubResource("RectangleShape2D_1hdqx")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-energy = 1.0
-texture = preload("res://Assets/light/light.png")
+texture = ExtResource("3_gntrk")
 texture_scale = 2.0
 
 [node name="AttackArea" type="Area2D" parent="."]
