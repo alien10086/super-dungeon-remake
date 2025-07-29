@@ -10,6 +10,9 @@ public partial class Main : Node
 	private AnimationPlayer _pauseAnimationPlayer;
 	private Sprite2D _pointer;
 	private Sprite2D _pointer2;
+
+    private AudioStreamPlayer2D _backgroundAudioPlayer;
+    private AudioStreamPlayer2D _sfcAudioPlayer;
 	
 	public override void _Ready()
 	{
@@ -29,7 +32,11 @@ public partial class Main : Node
 		// AddChild(_gameManager);
 		_pointer = GetNode<Sprite2D>("Pause/Pointer");
 		_pointer2 = GetNode<Sprite2D>("Pause/Pointer2");
+		_backgroundAudioPlayer =  GetNode<AudioStreamPlayer2D>("Music");
+		_sfcAudioPlayer =  GetNode<AudioStreamPlayer2D>("SFxExit");
 		
+		
+		_backgroundAudioPlayer.Play();
 		GD.Print("Main scene initialized successfully");
 	}
 	
