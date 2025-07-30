@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://dqxvyxkwqwqx0"]
+[gd_scene load_steps=15 format=3 uid="uid://dqxvyxkwqwqx0"]
 
 [ext_resource type="Script" uid="uid://sq6ksa36madt" path="res://Scripts/Gameplay/Player/PlayerController.cs" id="1_0hdqv"]
 [ext_resource type="Texture2D" uid="uid://b32o3fr60t45f" path="res://Assets/Sprites/player/knight_m_idle_anim_f0.png" id="2_1hdqw"]
+[ext_resource type="PackedScene" uid="uid://baig588a6ap7" path="res://Scenes/entities/weapon.tscn" id="2_17kvo"]
 [ext_resource type="Texture2D" uid="uid://b08sdomc23nr4" path="res://Assets/efx/light.png" id="3_gntrk"]
 [ext_resource type="Texture2D" uid="uid://dcfqey50g1153" path="res://Assets/Sprites/player/knight_m_idle_anim_f1.png" id="3_nn08x"]
 [ext_resource type="Texture2D" uid="uid://baftiowjv5uuo" path="res://Assets/Sprites/player/knight_m_idle_anim_f2.png" id="4_52ee3"]
@@ -64,14 +65,15 @@ animations = [{
 size = Vector2(15, 25)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
-position = Vector2(507, 332)
+position = Vector2(1, 3)
 script = ExtResource("1_0hdqv")
+WeaponScene = ExtResource("2_17kvo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(4.02, 4.02)
 sprite_frames = SubResource("SpriteFrames_glx4g")
 animation = &"walk"
-frame_progress = 0.602187
+frame_progress = 0.601
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -79,9 +81,11 @@ position = Vector2(-0.5, 2.5)
 shape = SubResource("RectangleShape2D_1hdqx")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-visible = false
+energy = 0.1
+range_item_cull_mask = 4
 texture = ExtResource("3_gntrk")
 texture_scale = 2.0
+height = 33.0
 
 [node name="AttackArea" type="Area2D" parent="."]
 visible = false

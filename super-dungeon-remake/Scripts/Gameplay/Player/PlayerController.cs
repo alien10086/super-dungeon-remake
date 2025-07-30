@@ -25,7 +25,7 @@ public partial class PlayerController : CombatEntity
     private Vector2 _attackDirection;
     
     private Camera2D _camera;
-    private Light2D _light;
+    private PointLight2D _light;
     private Area2D _hitbox;
     private AudioStreamPlayer2D _footstepSfx;
     private AudioStreamPlayer2D _painSfx;
@@ -47,13 +47,14 @@ public partial class PlayerController : CombatEntity
         base.SetupComponents();
         
         _camera = GetNodeOrNull<Camera2D>("Camera2D");
-        _light = GetNodeOrNull<Light2D>("Light2D");
+        _light = GetNodeOrNull<PointLight2D>("PointLight2D");
         _hitbox = GetNodeOrNull<Area2D>("Hitbox");
         _footstepSfx = GetNodeOrNull<AudioStreamPlayer2D>("SfxFootstep");
         _painSfx = GetNodeOrNull<AudioStreamPlayer2D>("SfxPain");
         _swipeSfx = GetNodeOrNull<AudioStreamPlayer2D>("SfxSwipe");
         
         SetupCamera();
+        SetupLight();
     }
     
     /// <summary>
@@ -65,6 +66,19 @@ public partial class PlayerController : CombatEntity
         {
             _camera.Zoom = Vector2.One * CameraZoomFactor;
             _camera.Enabled = true;
+        }
+    }
+    
+    /// <summary>
+    /// 设置灯光
+    /// </summary>
+    private void SetupLight()
+    {
+        if (_light != null)
+        {
+            _light.Visible = true;
+            _light.Energy = 1.5f;
+            _light.TextureScale = 4.0f; // 设置纹理缩放来控制照射范围
         }
     }
     
@@ -175,24 +189,28 @@ public partial class PlayerController : CombatEntity
         // 根据状态播放动画
         if (_recoilTime > 0)
         {
-            _sprite.Play("hit");
+            if (_sprite.Animation != "hit")
+                _sprite.Play("hit");
         }
         else if (Velocity.Length() > 0)
         {
-            _sprite.Play("walk");
+            if (_sprite.Animation != "walk")
+                _sprite.Play("walk");
         }
         else
         {
-            _sprite.Play("idle");
+            if (_sprite.Animation != "idle")
+                _sprite.Play("idle");
         }
     }
     
     private void UpdateLight(double delta)
     {
+        if (_light == null) return;
+        
         // Light flicker effect
         var time = Time.GetUnixTimeFromSystem();
-        // Note: TextureScale is not available in Godot 4 Light2D
-        // _light.Energy = 2.4f + (Mathf.Cos((float)time * 2) * 0.2f);
+        _light.Energy = 2.4f + (Mathf.Cos((float)time * 2) * 0.2f);
     }
     
     private void Attack()
@@ -310,9 +328,12 @@ public partial class PlayerController : CombatEntity
         // Play footstep sound on certain frames during walk animation
         if (_sprite.Animation == "walk" && (_sprite.Frame == 1 || _sprite.Frame == 3))
         {
-            // _footstepSfx.VolumeDb = _rng.RandfRange(-20f, -10f);
-            // _footstepSfx.PitchScale = _rng.RandfRange(0.7f, 1.3f);
-            // _footstepSfx.Play();
+            if (_footstepSfx != null)
+            {
+                _footstepSfx.VolumeDb = _rng.RandfRange(-20f, -10f);
+                _footstepSfx.PitchScale = _rng.RandfRange(0.7f, 1.3f);
+                _footstepSfx.Play();
+            }
         }
     }
     

@@ -10,7 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://dt5u5nl7s8d3l" path="res://Assets/sfx/exit.wav" id="7_50glp"]
 [ext_resource type="Script" uid="uid://bpdq0bm6hwx57" path="res://Scripts/Utils/GameData.cs" id="9_bmxlf"]
 [ext_resource type="Script" uid="uid://cxjqo5dvxeq4e" path="res://Scripts/Core/GameManager.cs" id="10_4kpch"]
-[ext_resource type="PackedScene" uid="uid://dqxvyxkwqwqx0" path="res://Scenes/Player.tscn" id="11_4kpch"]
+[ext_resource type="PackedScene" uid="uid://dqxvyxkwqwqx0" path="res://Scenes/entities/Player.tscn" id="11_4kpch"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kln2b"]
 bg_color = Color(0.177812, 0.521885, 0.266302, 1)
