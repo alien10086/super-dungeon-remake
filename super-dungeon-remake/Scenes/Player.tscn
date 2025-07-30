@@ -1,30 +1,91 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqxvyxkwqwqx0"]
+[gd_scene load_steps=14 format=3 uid="uid://dqxvyxkwqwqx0"]
 
 [ext_resource type="Script" uid="uid://sq6ksa36madt" path="res://Scripts/Gameplay/Player/PlayerController.cs" id="1_0hdqv"]
 [ext_resource type="Texture2D" uid="uid://b32o3fr60t45f" path="res://Assets/Sprites/player/knight_m_idle_anim_f0.png" id="2_1hdqw"]
 [ext_resource type="Texture2D" uid="uid://b08sdomc23nr4" path="res://Assets/efx/light.png" id="3_gntrk"]
+[ext_resource type="Texture2D" uid="uid://dcfqey50g1153" path="res://Assets/Sprites/player/knight_m_idle_anim_f1.png" id="3_nn08x"]
+[ext_resource type="Texture2D" uid="uid://baftiowjv5uuo" path="res://Assets/Sprites/player/knight_m_idle_anim_f2.png" id="4_52ee3"]
+[ext_resource type="Texture2D" uid="uid://f8y7slfxd8xd" path="res://Assets/Sprites/player/knight_m_idle_anim_f3.png" id="5_bhhdu"]
+[ext_resource type="Texture2D" uid="uid://daw7d15rbrnnk" path="res://Assets/Sprites/player/knight_m_hit_anim_f0.png" id="7_ksbbd"]
+[ext_resource type="Texture2D" uid="uid://ds52u6a0aswlh" path="res://Assets/Sprites/player/knight_m_run_anim_f0.png" id="8_glx4g"]
+[ext_resource type="Texture2D" uid="uid://bxb07u48ioxjv" path="res://Assets/Sprites/player/knight_m_run_anim_f1.png" id="9_miouo"]
+[ext_resource type="Texture2D" uid="uid://c87lxe4oydyjl" path="res://Assets/Sprites/player/knight_m_run_anim_f2.png" id="10_o3h8g"]
+[ext_resource type="Texture2D" uid="uid://cx6bneieumynw" path="res://Assets/Sprites/player/knight_m_run_anim_f3.png" id="11_1e7my"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_glx4g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_ksbbd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ksbbd")
+}],
+"loop": true,
+"name": &"hit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_1hdqw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_nn08x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_52ee3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_bhhdu")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_glx4g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_miouo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_o3h8g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_1e7my")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 7.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1hdqx"]
-size = Vector2(32, 32)
+size = Vector2(15, 25)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
+position = Vector2(507, 332)
 script = ExtResource("1_0hdqv")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_1hdqw")
-hframes = 4
-vframes = 4
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(4.02, 4.02)
+sprite_frames = SubResource("SpriteFrames_glx4g")
+animation = &"walk"
+frame_progress = 0.602187
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-0.5, 2.5)
 shape = SubResource("RectangleShape2D_1hdqx")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-
 [node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
 texture = ExtResource("3_gntrk")
 texture_scale = 2.0
 
 [node name="AttackArea" type="Area2D" parent="."]
+visible = false
+position = Vector2(0, 2)
 
 [node name="AttackCollision" type="CollisionShape2D" parent="AttackArea"]
 shape = SubResource("RectangleShape2D_1hdqx")

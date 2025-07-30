@@ -192,7 +192,7 @@ public partial class PlayerController : CombatEntity
         // Light flicker effect
         var time = Time.GetUnixTimeFromSystem();
         // Note: TextureScale is not available in Godot 4 Light2D
-        _light.Energy = 2.4f + (Mathf.Cos((float)time * 2) * 0.2f);
+        // _light.Energy = 2.4f + (Mathf.Cos((float)time * 2) * 0.2f);
     }
     
     private void Attack()
@@ -310,9 +310,9 @@ public partial class PlayerController : CombatEntity
         // Play footstep sound on certain frames during walk animation
         if (_sprite.Animation == "walk" && (_sprite.Frame == 1 || _sprite.Frame == 3))
         {
-            _footstepSfx.VolumeDb = _rng.RandfRange(-20f, -10f);
-            _footstepSfx.PitchScale = _rng.RandfRange(0.7f, 1.3f);
-            _footstepSfx.Play();
+            // _footstepSfx.VolumeDb = _rng.RandfRange(-20f, -10f);
+            // _footstepSfx.PitchScale = _rng.RandfRange(0.7f, 1.3f);
+            // _footstepSfx.Play();
         }
     }
     
