@@ -50,7 +50,7 @@ public partial class PlayerController : CombatEntity
         _light = GetNodeOrNull<PointLight2D>("PointLight2D");
         _hitbox = GetNodeOrNull<Area2D>("Hitbox");
         _footstepSfx = GetNodeOrNull<AudioStreamPlayer2D>("SFXFootstep");
-        _painSfx = GetNodeOrNull<AudioStreamPlayer2D>("SfxPain");
+        _painSfx = GetNodeOrNull<AudioStreamPlayer2D>("SFXPain");
         _swipeSfx = GetNodeOrNull<AudioStreamPlayer2D>("SFXSwipe");
         
         SetupCamera();
@@ -330,9 +330,12 @@ public partial class PlayerController : CombatEntity
         if (_recoilTime > 0) return;
         
         // Play pain sound
-        _painSfx.VolumeDb = _rng.RandfRange(-10f, 1f);
-        _painSfx.PitchScale = _rng.RandfRange(0.7f, 1.3f);
-        _painSfx.Play();
+        if (_painSfx != null)
+        {
+            _painSfx.VolumeDb = _rng.RandfRange(-10f, 1f);
+            _painSfx.PitchScale = _rng.RandfRange(0.7f, 1.3f);
+            _painSfx.Play();
+        }
         
         var actualDamage = Mathf.FloorToInt((damage + _rng.RandiRange(0, 5)) * factor);
         CurrentHealth -= actualDamage;
