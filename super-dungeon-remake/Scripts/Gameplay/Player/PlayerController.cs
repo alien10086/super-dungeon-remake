@@ -213,45 +213,33 @@ public partial class PlayerController : CombatEntity
         _light.Energy = 2.4f + (Mathf.Cos((float)time * 2) * 0.2f);
     }
     
-    private void Attack()
+    /// <summary>
+    /// 重写攻击方法，添加动画和武器自动销毁
+    /// </summary>
+    public override void AttackInDirection(Vector2 direction)
     {
-        if (WeaponScene == null) return;
+        if (!CanAttack) return;
         
-        var weapon = WeaponScene.Instantiate() as Node2D;
-        if (weapon == null) return;
+        // 调用基类方法
+        base.AttackInDirection(direction);
         
-        weapon.AddToGroup(GlobalConstants.GroupNames.PROJECTILE);
-        
-        // Position weapon based on attack direction
-        if (_attackDirection.X > 0)
+        // 播放攻击动画（使用hit动画代替attack）
+        if (_sprite != null && _sprite.Animation != "hit")
         {
-            weapon.Rotation = Mathf.Pi / 2; // 90 degrees
-            weapon.Position = new Vector2(8, 16);
-        }
-        else if (_attackDirection.X < 0)
-        {
-            weapon.Rotation = -Mathf.Pi / 2; // -90 degrees
-            weapon.Position = new Vector2(8, 16);
-        }
-        else if (_attackDirection.Y > 0)
-        {
-            weapon.Rotation = Mathf.Pi; // 180 degrees
-            weapon.Position = new Vector2(8, 16);
-            weapon.ZIndex = 11;
-        }
-        else if (_attackDirection.Y < 0)
-        {
-            weapon.Rotation = 0; // 0 degrees
-            weapon.Position = new Vector2(8, 16);
+            _sprite.Play("hit");
         }
         
-        AddChild(weapon);
-        
-        // Play attack sound
-        _swipeSfx.PitchScale = _rng.RandfRange(0.9f, 1.8f);
-        _swipeSfx.Play();
-        
-        _attackTimer = AttackCooldown;
+        // 自动销毁武器
+        GetTree().CreateTimer(0.3f).Timeout += () => {
+            // 查找并销毁武器子节点
+            foreach (Node child in GetChildren())
+            {
+                if (child.Name.ToString().Contains("weapon") || child.Name.ToString().Contains("Weapon"))
+                {
+                    child.QueueFree();
+                }
+            }
+        };
     }
     
     public void TakeDamage(Vector2 collisionDirection, float damage, float factor = 1f)
