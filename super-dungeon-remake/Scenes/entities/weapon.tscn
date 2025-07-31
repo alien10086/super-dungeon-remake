@@ -1,30 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://baig588a6ap7"]
+[gd_scene load_steps=7 format=3 uid="uid://baig588a6ap7"]
 
 [ext_resource type="Texture2D" uid="uid://damh8wkyceykd" path="res://Assets/Sprites/player/weapon_red_gem_sword.png" id="1_nnrvt"]
+[ext_resource type="Script" uid="uid://bx8g2c3nfqqk6" path="res://Scripts/Gameplay/Player/Weapon.cs" id="1_nwjid"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nwjid"]
 size = Vector2(8, 20)
 
-[sub_resource type="Animation" id="Animation_nnrvt"]
-resource_name = "attack"
-length = 0.5
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = false
-tracks/0/keys = {
-"times": PackedFloat32Array(-0.0333333, 0.433333),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [-1.0472, 1.0472]
-}
-
 [sub_resource type="Animation" id="Animation_nwjid"]
 length = 0.001
-loop_mode = 1
+loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -38,6 +22,21 @@ tracks/0/keys = {
 "values": [0.0]
 }
 
+[sub_resource type="Animation" id="Animation_nnrvt"]
+resource_name = "attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.0333333, 0.966667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-1.0472, 1.0472]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fdyqn"]
 _data = {
 &"RESET": SubResource("Animation_nwjid"),
@@ -48,6 +47,7 @@ _data = {
 scale = Vector2(4, 4)
 collision_layer = 2
 collision_mask = 4
+script = ExtResource("1_nwjid")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -10)

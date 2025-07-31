@@ -5,4 +5,7 @@
     <RootNamespace>SuperDungeonRemake</RootNamespace>
     <AssemblyName>SuperDungeonRemake</AssemblyName>
   </PropertyGroup>
+    <ItemGroup>
+      <Folder Include="Scenes\entities\" />
+    </ItemGroup>
 </Project>
