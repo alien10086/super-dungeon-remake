@@ -229,6 +229,70 @@ public partial class PlayerController : CombatEntity
             _sprite.Play("hit");
         }
         
+        // 延迟播放武器攻击动画，确保在武器变换设置之后
+        CallDeferred(nameof(PlayWeaponAnimation));
+    }
+    
+    private void PlayWeaponAnimation()
+    {
+        foreach (Node child in GetChildren())
+        {
+            if (child.Name.ToString().Contains("weapon") || child.Name.ToString().Contains("Weapon"))
+            {
+                var animationPlayer = child.GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
+                if (animationPlayer != null)
+                {
+                    // 先停止动画，然后设置初始旋转，再播放动画
+                    animationPlayer.Stop();
+                    animationPlayer.Play("attack");
+                }
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 重写武器变换设置，参考GDScript版本的攻击逻辑
+    /// </summary>
+    protected override void SetupWeaponTransform(Node2D weapon, Vector2 direction)
+    {
+        // 使用玩家的输入方向而不是攻击方向
+        var attackDir = _inputDirection != Vector2.Zero ? _inputDirection.Normalized() : _lastAttackDirection.Normalized();
+        
+        // 先停止可能存在的动画播放器，避免动画覆盖旋转设置
+        var animationPlayer = weapon.GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
+        if (animationPlayer != null)
+        {
+            animationPlayer.Stop();
+        }
+        
+        // 参考GDScript版本的武器设置逻辑
+        GD.Print("attackDir: ", attackDir);
+        if (attackDir.X > 0)
+        {
+            // 向右：旋转90度
+            weapon.Rotation = Mathf.Pi / 2; // 90度
+            weapon.Position = new Vector2(24, 24);
+        }
+        else if (attackDir.X < 0)
+        {
+            // 向左：旋转-90度
+            weapon.Rotation = -Mathf.Pi / 2; // -90度
+            weapon.Position = new Vector2(8, 16);
+        }
+        else if (attackDir.Y > 0)
+        {
+            // 向下：旋转180度
+            weapon.Rotation = Mathf.Pi; // 180度
+            weapon.Position = new Vector2(8, 16);
+            weapon.ZIndex = 11;
+        }
+        else if (attackDir.Y < 0)
+        {
+            // 向上：旋转0度
+            weapon.Rotation = 0; // 0度
+            weapon.Position = new Vector2(8, 12);
+        }
+        
         // 自动销毁武器
         GetTree().CreateTimer(0.3f).Timeout += () => {
             // 查找并销毁武器子节点
