@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dqxvyxkwqwqx0"]
+[gd_scene load_steps=18 format=3 uid="uid://dqxvyxkwqwqx0"]
 
 [ext_resource type="Script" uid="uid://sq6ksa36madt" path="res://Scripts/Gameplay/Player/PlayerController.cs" id="1_0hdqv"]
 [ext_resource type="Texture2D" uid="uid://b32o3fr60t45f" path="res://Assets/Sprites/player/knight_m_idle_anim_f0.png" id="2_1hdqw"]
@@ -12,6 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://bxb07u48ioxjv" path="res://Assets/Sprites/player/knight_m_run_anim_f1.png" id="9_miouo"]
 [ext_resource type="Texture2D" uid="uid://c87lxe4oydyjl" path="res://Assets/Sprites/player/knight_m_run_anim_f2.png" id="10_o3h8g"]
 [ext_resource type="Texture2D" uid="uid://cx6bneieumynw" path="res://Assets/Sprites/player/knight_m_run_anim_f3.png" id="11_1e7my"]
+[ext_resource type="AudioStream" uid="uid://diqsm4f86xwsx" path="res://Assets/sfx/footstep.wav" id="13_7ub3w"]
+[ext_resource type="AudioStream" uid="uid://dmmdylhgm2cj6" path="res://Assets/sfx/swipe.wav" id="14_0sx8c"]
+[ext_resource type="AudioStream" uid="uid://djbe441ar6r2k" path="res://Assets/sfx/grunts.wav" id="15_rso1h"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_glx4g"]
 animations = [{
@@ -62,7 +65,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1hdqx"]
-size = Vector2(15, 25)
+size = Vector2(22, 31)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 position = Vector2(1, 3)
@@ -77,7 +80,7 @@ frame_progress = 0.601
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2(-0.5, 2.5)
+position = Vector2(0, 19)
 shape = SubResource("RectangleShape2D_1hdqx")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
@@ -87,12 +90,23 @@ texture = ExtResource("3_gntrk")
 texture_scale = 2.0
 height = 33.0
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[node name="SFXFootstep" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_7ub3w")
+
+[node name="SFXSwipe" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_0sx8c")
+
+[node name="SFXPain" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_rso1h")
+
 [node name="AttackArea" type="Area2D" parent="."]
 visible = false
 position = Vector2(0, 2)
 
 [node name="AttackCollision" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(-1, 16.5)
 shape = SubResource("RectangleShape2D_1hdqx")
 disabled = true
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+debug_color = Color(0.853714, 0.020812, 0.543438, 1)

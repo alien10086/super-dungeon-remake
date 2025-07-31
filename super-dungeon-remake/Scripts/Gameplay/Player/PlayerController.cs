@@ -49,9 +49,9 @@ public partial class PlayerController : CombatEntity
         _camera = GetNodeOrNull<Camera2D>("Camera2D");
         _light = GetNodeOrNull<PointLight2D>("PointLight2D");
         _hitbox = GetNodeOrNull<Area2D>("Hitbox");
-        _footstepSfx = GetNodeOrNull<AudioStreamPlayer2D>("SfxFootstep");
+        _footstepSfx = GetNodeOrNull<AudioStreamPlayer2D>("SFXFootstep");
         _painSfx = GetNodeOrNull<AudioStreamPlayer2D>("SfxPain");
-        _swipeSfx = GetNodeOrNull<AudioStreamPlayer2D>("SfxSwipe");
+        _swipeSfx = GetNodeOrNull<AudioStreamPlayer2D>("SFXSwipe");
         
         SetupCamera();
         SetupLight();
@@ -195,12 +195,20 @@ public partial class PlayerController : CombatEntity
         else if (Velocity.Length() > 0)
         {
             if (_sprite.Animation != "walk")
+            {
                 _sprite.Play("walk");
+                // 开始播放脚步音效
+                PlayFootstepSound();
+            }
         }
         else
         {
             if (_sprite.Animation != "idle")
+            {
                 _sprite.Play("idle");
+                // 停止脚步音效
+                StopFootstepSound();
+            }
         }
     }
     
@@ -214,11 +222,47 @@ public partial class PlayerController : CombatEntity
     }
     
     /// <summary>
+    /// 播放脚步音效
+    /// </summary>
+    private void PlayFootstepSound()
+    {
+        if (_footstepSfx != null && !_footstepSfx.Playing)
+        {
+            _footstepSfx.Play();
+        }
+    }
+    
+    /// <summary>
+    /// 停止脚步音效
+    /// </summary>
+    private void StopFootstepSound()
+    {
+        if (_footstepSfx != null && _footstepSfx.Playing)
+        {
+            _footstepSfx.Stop();
+        }
+    }
+    
+    /// <summary>
+    /// 播放攻击挥舞音效
+    /// </summary>
+    private void PlaySwipeSound()
+    {
+        if (_swipeSfx != null)
+        {
+            _swipeSfx.Play();
+        }
+    }
+    
+    /// <summary>
     /// 重写攻击方法，添加动画和武器自动销毁
     /// </summary>
     public override void AttackInDirection(Vector2 direction)
     {
         if (!CanAttack) return;
+        
+        // 播放攻击音效
+        PlaySwipeSound();
         
         // 调用基类方法
         base.AttackInDirection(direction);
@@ -243,6 +287,9 @@ public partial class PlayerController : CombatEntity
         // 设置武器位置
         weapon.Position = new Vector2(8, 16);
         
+        // 设置武器显示在玩家后面
+        weapon.ZIndex = -1;
+        
         // 如果是Weapon类型，设置旋转角度
         if (weapon is Weapon weaponScript)
         {
@@ -252,26 +299,25 @@ public partial class PlayerController : CombatEntity
             {
                 // 向右：旋转90度
                 rotationDegrees = 90;
-                weapon.Position = new Vector2(24, 24);
+                weapon.Position = new Vector2(20, 24);
             }
             else if (attackDir.X < 0)
             {
                 // 向左：旋转-90度
                 rotationDegrees = -90;
-                weapon.Position = new Vector2(8, 16);
+                weapon.Position = new Vector2(-20, 24);
             }
             else if (attackDir.Y > 0)
             {
                 // 向下：旋转180度
                 rotationDegrees = 180;
-                weapon.Position = new Vector2(8, 16);
-                weapon.ZIndex = 11;
+                weapon.Position = new Vector2(20, 24);
             }
             else if (attackDir.Y < 0)
             {
                 // 向上：旋转0度
                 rotationDegrees = 0;
-                weapon.Position = new Vector2(8, 12);
+                weapon.Position = new Vector2(20, 20);
             }
             
             // 设置武器旋转角度
