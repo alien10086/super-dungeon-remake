@@ -18,7 +18,7 @@ public partial class GameManager : Node
 	public LevelGenerator LevelGenerator { get; private set; }
 	public Node2D CurrentMap { get; private set; }
 	
-	private Control _hud;
+	private CanvasLayer _hud;
 	
 	public override void _Ready()
 	{
@@ -36,7 +36,7 @@ public partial class GameManager : Node
 		LevelGenerator = new LevelGenerator();
 		AddChild(LevelGenerator);
 		
-		_hud = GetNode<Control>("CanvasLayer/HUD");
+		_hud = GetNode<CanvasLayer>("/root/Main/HUD");
 		
 		if (_hud == null)
 		{
