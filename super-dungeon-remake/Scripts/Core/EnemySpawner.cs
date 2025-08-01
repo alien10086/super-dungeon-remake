@@ -36,7 +36,7 @@ public partial class EnemySpawner : Node
         _rng.Randomize();
         
         // 获取关卡生成器引用
-        var gameManager = GetNode<GameManager>("/root/Main/GameManager");
+        var gameManager = GetNode<GameManager>("/root/Main/GameContainer/GameManage");
         _levelGenerator = gameManager.LevelGenerator;
         
         // 如果没有设置敌人场景，尝试加载默认场景

@@ -116,7 +116,7 @@ public partial class GameManager : Node
 	{
 		if (_hud != null)
 		{
-			var depthLabel = _hud.GetNode<Label>("TopBar/DepthLabel");
+			var depthLabel = _hud.GetNode<Label>("DepthLabel");
 			if (depthLabel != null)
 			{
 				depthLabel.Text = $"{GameData.Instance?.Depth * 100 ?? 100} ft";
