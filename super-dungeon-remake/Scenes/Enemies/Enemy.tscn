@@ -1,22 +1,147 @@
-[gd_scene load_steps=3 format=3 uid="uid://eqxvyxkwqwqxy"]
+[gd_scene load_steps=17 format=3 uid="uid://vj1evnn6pu67"]
 
-[ext_resource type="Texture2D" uid="uid://cqxvyxkwqwqxb" path="res://Assets/sprites/enemies.png" id="1_1hdqw"]
+[ext_resource type="Texture2D" uid="uid://bxo5ts7thsst8" path="res://Assets/Sprites/monsters/orc_warrior_run_anim_f0.png" id="1_3a2bb"]
+[ext_resource type="Texture2D" uid="uid://b0w3m0wic5be6" path="res://Assets/Sprites/monsters/orc_warrior_run_anim_f1.png" id="2_d330j"]
+[ext_resource type="Texture2D" uid="uid://dvqb6ae00hkvu" path="res://Assets/Sprites/monsters/orc_warrior_run_anim_f2.png" id="3_i4j8h"]
+[ext_resource type="Texture2D" uid="uid://ctppgl1iqtih8" path="res://Assets/Sprites/monsters/orc_warrior_run_anim_f3.png" id="4_f2e67"]
+[ext_resource type="Texture2D" uid="uid://c35h57mmrypsd" path="res://Assets/Sprites/monsters/skelet_run_anim_f0.png" id="5_8xwc3"]
+[ext_resource type="Texture2D" uid="uid://7e55ualm0unh" path="res://Assets/Sprites/monsters/skelet_run_anim_f1.png" id="6_c5rnq"]
+[ext_resource type="Texture2D" uid="uid://d273e8al7b6gx" path="res://Assets/Sprites/monsters/skelet_run_anim_f2.png" id="7_g2h3t"]
+[ext_resource type="Texture2D" uid="uid://6xx1jmk6kdjg" path="res://Assets/Sprites/monsters/skelet_run_anim_f3.png" id="8_r6blr"]
+[ext_resource type="Texture2D" uid="uid://co1pxef303cjy" path="res://Assets/Sprites/monsters/swampy_run_anim_f1.png" id="9_uq631"]
+[ext_resource type="Texture2D" uid="uid://rvux7p0kymxd" path="res://Assets/Sprites/monsters/swampy_run_anim_f2.png" id="10_du463"]
+[ext_resource type="Texture2D" uid="uid://cb8o26jovs56o" path="res://Assets/Sprites/monsters/swampy_run_anim_f3.png" id="11_w4qui"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m74t7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3a2bb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_d330j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_i4j8h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_f2e67")
+}],
+"loop": true,
+"name": &"goblin",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_8xwc3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_c5rnq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_g2h3t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_r6blr")
+}],
+"loop": true,
+"name": &"skel",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_uq631")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_du463")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_w4qui")
+}],
+"loop": true,
+"name": &"slime",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1hdqx"]
-size = Vector2(32, 32)
+size = Vector2(8, 12)
+
+[sub_resource type="Animation" id="Animation_3a2bb"]
+resource_name = "death"
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="Animation" id="Animation_d330j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i4j8h"]
+_data = {
+&"RESET": SubResource("Animation_d330j"),
+&"death": SubResource("Animation_3a2bb")
+}
 
 [node name="Enemy" type="CharacterBody2D" groups=["enemies"]]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_1hdqw")
-hframes = 4
-vframes = 4
-frame = 0
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_m74t7")
+animation = &"goblin"
+frame_progress = 0.129094
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0)
 shape = SubResource("RectangleShape2D_1hdqx")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_i4j8h")
+}
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 
@@ -25,6 +150,5 @@ offset_left = -16.0
 offset_top = -24.0
 offset_right = 16.0
 offset_bottom = -16.0
-max_value = 100.0
 value = 100.0
 show_percentage = false
