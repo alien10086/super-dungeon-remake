@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://vj1evnn6pu67"]
+[gd_scene load_steps=22 format=3 uid="uid://vj1evnn6pu67"]
 
 [ext_resource type="Texture2D" uid="uid://bxo5ts7thsst8" path="res://Assets/Sprites/monsters/orc_warrior_run_anim_f0.png" id="1_3a2bb"]
 [ext_resource type="Texture2D" uid="uid://b0w3m0wic5be6" path="res://Assets/Sprites/monsters/orc_warrior_run_anim_f1.png" id="2_d330j"]
@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://rvux7p0kymxd" path="res://Assets/Sprites/monsters/swampy_run_anim_f2.png" id="10_du463"]
 [ext_resource type="Texture2D" uid="uid://cb8o26jovs56o" path="res://Assets/Sprites/monsters/swampy_run_anim_f3.png" id="11_w4qui"]
 [ext_resource type="Texture2D" uid="uid://ca08pkbybxnel" path="res://Assets/efx/4x4.png" id="12_d330j"]
+[ext_resource type="AudioStream" uid="uid://dh67fwkw4ypg" path="res://Assets/sfx/smack.wav" id="12_f2e67"]
+[ext_resource type="AudioStream" uid="uid://b1lmf5qexdoe1" path="res://Assets/sfx/death.wav" id="13_8xwc3"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_m74t7"]
 animations = [{
@@ -159,14 +161,18 @@ emission_shape = 3
 emission_box_extents = Vector3(8, 8, 8)
 gravity = Vector3(0, 98, 0)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f2e67"]
+size = Vector2(5, 9)
+
 [node name="Enemy" type="CharacterBody2D" groups=["enemies"]]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_m74t7")
 animation = &"goblin"
-frame_progress = 0.56052
+frame_progress = 0.51412
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(1, 0)
 shape = SubResource("RectangleShape2D_1hdqx")
 
@@ -175,15 +181,11 @@ libraries = {
 &"": SubResource("AnimationLibrary_i4j8h")
 }
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="SFXHit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_f2e67")
 
-[node name="HealthBar" type="ProgressBar" parent="."]
-offset_left = -16.0
-offset_top = -24.0
-offset_right = 16.0
-offset_bottom = -16.0
-value = 100.0
-show_percentage = false
+[node name="SFXDeath" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_8xwc3")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 amount = 24
@@ -195,3 +197,14 @@ visibility_rect = Rect2(-8, -8, 16, 16)
 local_coords = true
 draw_order = 0
 process_material = SubResource("ParticleProcessMaterial_i4j8h")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+visible = false
+position = Vector2(-46, -47)
+rect = Rect2(-10, -10, 128, 128)
+
+[node name="HitBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_f2e67")
