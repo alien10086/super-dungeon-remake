@@ -1,7 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cdltkvynal3y8"]
+[gd_scene load_steps=3 format=3 uid="uid://cdltkvynal3y8"]
 
 [ext_resource type="TileSet" path="res://Resources/dungeon-tiles.tres" id="1_8igoj"]
+[ext_resource type="Script" uid="uid://crbinxolsws2u" path="res://Scripts/Level/Map.cs" id="2_8gkrh"]
 
 [node name="Map" type="TileMap"]
 tile_set = ExtResource("1_8igoj")
 format = 2
+script = ExtResource("2_8gkrh")

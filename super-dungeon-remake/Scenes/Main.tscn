@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bqxvyxkwqwqxv"]
+[gd_scene load_steps=30 format=3 uid="uid://bqxvyxkwqwqxv"]
 
 [ext_resource type="Script" uid="uid://4mxiicvmr0yi" path="res://Scripts/UI/Main.cs" id="1_jw32o"]
 [ext_resource type="Theme" uid="uid://bkr48weqeivkq" path="res://Resources/theme.tres" id="2_idj7w"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://chxvipcxv5e82" path="res://Scenes/Enemies/goblin.tscn" id="12_1p5hy"]
 [ext_resource type="PackedScene" uid="uid://vj1evnn6pu67" path="res://Scenes/Enemies/slime.tscn" id="12_grg3l"]
 [ext_resource type="PackedScene" uid="uid://8bygma1nwtyu" path="res://Scenes/Enemies/skel.tscn" id="13_h1m7h"]
+[ext_resource type="PackedScene" uid="uid://cdltkvynal3y8" path="res://Scenes/Level/Map.tscn" id="15_h1m7h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kln2b"]
 bg_color = Color(0.177812, 0.521885, 0.266302, 1)
@@ -372,3 +373,4 @@ script = ExtResource("9_bmxlf")
 script = ExtResource("10_4kpch")
 PlayerScene = ExtResource("11_4kpch")
 EnemyScenes = Array[PackedScene]([ExtResource("12_1p5hy"), ExtResource("13_h1m7h"), ExtResource("12_grg3l")])
+MapScene = ExtResource("15_h1m7h")
