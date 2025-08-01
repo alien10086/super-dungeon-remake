@@ -2,6 +2,7 @@ using Godot;
 using SuperDungeonRemake.Gameplay.Player;
 using SuperDungeonRemake.Level;
 using SuperDungeonRemake.Utils;
+using SuperDungeonRemake.Gameplay.Enemies;
 
 namespace SuperDungeonRemake.Core;
 
@@ -11,12 +12,13 @@ public partial class GameManager : Node
 	
 	[Export] public PackedScene PlayerScene { get; set; }
 	[Export] public PackedScene[] EnemyScenes { get; set; }
-	[Export] public PackedScene ExitScene { get; set; }
+	// [Export] public PackedScene ExitScene { get; set; }
 	[Export] public PackedScene MapScene { get; set; }
 	
 	public PlayerController CurrentPlayer { get; private set; }
 	public LevelGenerator LevelGenerator { get; private set; }
 	public Node2D CurrentMap { get; private set; }
+	public EnemySpawner EnemySpawner { get; private set; }
 	
 	private CanvasLayer _hud;
 	
@@ -35,6 +37,9 @@ public partial class GameManager : Node
 		
 		LevelGenerator = new LevelGenerator();
 		AddChild(LevelGenerator);
+		
+		EnemySpawner = new EnemySpawner();
+		AddChild(EnemySpawner);
 		
 		_hud = GetNode<CanvasLayer>("/root/Main/HUD");
 		
@@ -81,6 +86,9 @@ public partial class GameManager : Node
 		// Position player in a random room
 		PositionPlayerRandomly();
 		
+		// Spawn enemies for the level
+		SpawnEnemiesForLevel();
+		
 		// Update HUD
 		UpdateHUD();
 	}
@@ -113,6 +121,50 @@ public partial class GameManager : Node
 			{
 				depthLabel.Text = $"{GameData.Instance?.Depth * 100 ?? 100} ft";
 			}
+		}
+	}
+	
+	/// <summary>
+	/// 为当前关卡生成敌人
+	/// </summary>
+	private void SpawnEnemiesForLevel()
+	{
+		if (EnemySpawner == null)
+		{
+			GD.PrintErr("EnemySpawner is null, cannot spawn enemies");
+			return;
+		}
+		
+		// 获取当前关卡深度
+		var currentDepth = GameData.Instance?.Depth ?? 1;
+		
+		// 根据关卡深度生成敌人
+		var spawnedEnemies = EnemySpawner.SpawnRandomEnemiesForLevel(currentDepth);
+		
+		GD.Print($"Spawned {spawnedEnemies.Count} enemies for level {currentDepth}");
+	}
+	
+	/// <summary>
+	/// 手动生成指定类型的敌人
+	/// </summary>
+	/// <param name="enemyType">敌人类型</param>
+	/// <param name="position">生成位置（可选）</param>
+	/// <returns>生成的敌人实例</returns>
+	public Enemy SpawnEnemy(EnemyType enemyType, Vector2? position = null)
+	{
+		if (EnemySpawner == null)
+		{
+			GD.PrintErr("EnemySpawner is null, cannot spawn enemy");
+			return null;
+		}
+		
+		if (position.HasValue)
+		{
+			return EnemySpawner.SpawnEnemy(position.Value, enemyType);
+		}
+		else
+		{
+			return EnemySpawner.SpawnEnemyInRandomRoom(enemyType);
 		}
 	}
 }

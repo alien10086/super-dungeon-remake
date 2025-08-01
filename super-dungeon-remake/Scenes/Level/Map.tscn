@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdltkvynal3y8"]
+
+[ext_resource type="TileSet" path="res://Resources/dungeon-tiles.tres" id="1_8igoj"]
+
+[node name="Map" type="TileMap"]
+tile_set = ExtResource("1_8igoj")
+format = 2

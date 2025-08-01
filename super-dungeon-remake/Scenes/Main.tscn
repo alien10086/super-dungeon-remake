@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bqxvyxkwqwqxv"]
+[gd_scene load_steps=29 format=3 uid="uid://bqxvyxkwqwqxv"]
 
 [ext_resource type="Script" uid="uid://4mxiicvmr0yi" path="res://Scripts/UI/Main.cs" id="1_jw32o"]
 [ext_resource type="Theme" uid="uid://bkr48weqeivkq" path="res://Resources/theme.tres" id="2_idj7w"]
@@ -11,6 +11,9 @@
 [ext_resource type="Script" uid="uid://bpdq0bm6hwx57" path="res://Scripts/Utils/GameData.cs" id="9_bmxlf"]
 [ext_resource type="Script" uid="uid://cxjqo5dvxeq4e" path="res://Scripts/Core/GameManager.cs" id="10_4kpch"]
 [ext_resource type="PackedScene" uid="uid://dqxvyxkwqwqx0" path="res://Scenes/entities/Player.tscn" id="11_4kpch"]
+[ext_resource type="PackedScene" uid="uid://chxvipcxv5e82" path="res://Scenes/Enemies/goblin.tscn" id="12_1p5hy"]
+[ext_resource type="PackedScene" uid="uid://vj1evnn6pu67" path="res://Scenes/Enemies/slime.tscn" id="12_grg3l"]
+[ext_resource type="PackedScene" uid="uid://8bygma1nwtyu" path="res://Scenes/Enemies/skel.tscn" id="13_h1m7h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kln2b"]
 bg_color = Color(0.177812, 0.521885, 0.266302, 1)
@@ -368,3 +371,4 @@ script = ExtResource("9_bmxlf")
 [node name="GameManage" type="Node" parent="GameContainer"]
 script = ExtResource("10_4kpch")
 PlayerScene = ExtResource("11_4kpch")
+EnemyScenes = Array[PackedScene]([ExtResource("12_1p5hy"), ExtResource("13_h1m7h"), ExtResource("12_grg3l")])
