@@ -81,6 +81,15 @@ public partial class Map : TileMap
         // 获取生成的房间列表
         AllRooms = levelGenerator.AllRooms;
         
+        // 检查是否有房间生成
+        if (AllRooms == null || AllRooms.Count == 0)
+        {
+            GD.PrintErr("错误：没有生成任何房间，无法继续地图生成！");
+            return;
+        }
+        
+        GD.Print($"Map.cs: 获得 {AllRooms.Count} 个房间");
+        
         // 为每个房间添加细节、柱子和宝藏
         foreach (var room in AllRooms)
         {

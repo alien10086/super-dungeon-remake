@@ -20,6 +20,19 @@ public static class GlobalConstants
     public const string LayerEnemies = "enemies";
     
     // Group names
+    public static class GroupNames
+    {
+        public const string Monsters = "monsters";
+        public const string Weapons = "weapons";
+        public const string Projectiles = "projectiles";
+        public const string Decos = "decos";
+        public const string ENEMIES = "enemies";
+        public const string PLAYER = "player";
+        public const string ENEMY = "enemy";
+        public const string PROJECTILE = "projectile";
+    }
+    
+    // 保持向后兼容性的旧常量
     public const string GroupMonsters = "monsters";
     public const string GroupWeapons = "weapons";
     public const string GroupProjectiles = "projectiles";

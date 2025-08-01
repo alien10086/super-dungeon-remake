@@ -60,7 +60,7 @@ public class BSPNode
         if (splitHorizontally)
         {
             var halfHeight = Mathf.CeilToInt(Height / 2.0f);
-            var offset = (int)(Height * GlobalConstants.SplitPercentage / 100.0f);
+            var offset = (int)(Height * GlobalConstants.SplitPercentage);
             var splitHeight = _rng.RandiRange(halfHeight - offset, halfHeight + offset);
             
             LeftChild = new BSPNode(Left, Top, Width, splitHeight, Depth + 1);
@@ -69,7 +69,7 @@ public class BSPNode
         else
         {
             var halfWidth = Mathf.CeilToInt(Width / 2.0f);
-            var offset = (int)(Width * GlobalConstants.SplitPercentage / 100.0f);
+            var offset = (int)(Width * GlobalConstants.SplitPercentage);
             var splitWidth = _rng.RandiRange(halfWidth - offset, halfWidth + offset);
             
             LeftChild = new BSPNode(Left, Top, splitWidth, Height, Depth + 1);
@@ -84,12 +84,24 @@ public class BSPNode
         if (!IsLeaf)
             return;
             
-        var roomWidth = _rng.RandiRange(Mathf.FloorToInt(Width / 2.0f), Mathf.Max(2, Width - 2));
-        var roomHeight = _rng.RandiRange(Mathf.FloorToInt(Height / 2.0f), Mathf.Max(2, Height - 2));
-        var roomLeft = Left + _rng.RandiRange(1, Mathf.Max(1, Width - roomWidth - 1));
-        var roomTop = Top + _rng.RandiRange(1, Mathf.Max(1, Height - roomHeight - 1));
+        // 确保有足够的空间创建房间
+        if (Width < 4 || Height < 4)
+            return;
+            
+        var minRoomSize = 3;
+        var maxRoomWidth = Mathf.Max(minRoomSize, Width - 2);
+        var maxRoomHeight = Mathf.Max(minRoomSize, Height - 2);
         
-        if (roomWidth >= 1 && roomHeight >= 1)
+        var roomWidth = _rng.RandiRange(minRoomSize, maxRoomWidth);
+        var roomHeight = _rng.RandiRange(minRoomSize, maxRoomHeight);
+        
+        var maxLeft = Mathf.Max(1, Width - roomWidth - 1);
+        var maxTop = Mathf.Max(1, Height - roomHeight - 1);
+        
+        var roomLeft = Left + _rng.RandiRange(1, maxLeft);
+        var roomTop = Top + _rng.RandiRange(1, maxTop);
+        
+        if (roomWidth >= minRoomSize && roomHeight >= minRoomSize)
         {
             Room = new Room(roomLeft, roomTop, roomWidth, roomHeight);
         }

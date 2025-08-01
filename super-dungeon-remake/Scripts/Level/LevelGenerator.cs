@@ -87,6 +87,21 @@ public partial class LevelGenerator : Node
         UpdateGenerationStats(startTime);
         
         GD.Print($"地牢生成完成：{AllRooms.Count}个房间，耗时{Stats.GenerationTime:F2}秒");
+        
+        // 调试信息：输出房间详情
+        if (AllRooms.Count == 0)
+        {
+            GD.PrintErr("警告：没有生成任何房间！");
+        }
+        else
+        {
+            GD.Print($"房间列表：");
+            for (int i = 0; i < AllRooms.Count; i++)
+            {
+                var room = AllRooms[i];
+                GD.Print($"  房间{i}: ({room.Left}, {room.Top}) 尺寸: {room.Width}x{room.Height}");
+            }
+        }
     }
     
     /// <summary>
