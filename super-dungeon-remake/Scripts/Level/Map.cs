@@ -189,18 +189,20 @@ public partial class Map : TileMap
     /// </summary>
     private void LoadDefaultScenes()
     {
-        if (TorchScene == null)
-        {
-            TorchScene = GD.Load<PackedScene>("res://entities/torch.tscn");
-        }
-        if (ChestScene == null)
-        {
-            ChestScene = GD.Load<PackedScene>("res://entities/chest.tscn");
-        }
-        if (PotionScene == null)
-        {
-            PotionScene = GD.Load<PackedScene>("res://entities/potion.tscn");
-        }
+        // TorchScene is not available yet
+        // if (TorchScene == null)
+        // {
+        //     TorchScene = GD.Load<PackedScene>("res://entities/torch.tscn");
+        // }
+        // ChestScene and PotionScene are not available yet
+        // if (ChestScene == null)
+        // {
+        //     ChestScene = GD.Load<PackedScene>("res://entities/chest.tscn");
+        // }
+        // if (PotionScene == null)
+        // {
+        //     PotionScene = GD.Load<PackedScene>("res://entities/potion.tscn");
+        // }
     }
     #endregion
     
