@@ -1,0 +1,96 @@
+[gd_scene load_steps=11 format=3 uid="uid://cyehxskrj0ptc"]
+
+[ext_resource type="Script" uid="uid://c382owsfqityd" path="res://Scenes/entities/Potion.cs" id="1_aymfj"]
+[ext_resource type="Texture2D" uid="uid://cyhl15ifmgelr" path="res://Assets/misc/potion.png" id="2_nulks"]
+[ext_resource type="AudioStream" uid="uid://cwq3qmxaaug6" path="res://Assets/sfx/heal.wav" id="3_nulks"]
+[ext_resource type="Texture2D" uid="uid://ca08pkbybxnel" path="res://Assets/efx/4x4.png" id="4_uk8d5"]
+[ext_resource type="Texture2D" uid="uid://bpr7d110nnaft" path="res://Assets/efx/light-sm.png" id="5_aymfj"]
+
+[sub_resource type="Animation" id="Animation_aymfj"]
+resource_name = "glow"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.966667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0, 0.788235, 1, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_d60x6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uk8d5"]
+_data = {
+&"RESET": SubResource("Animation_d60x6"),
+&"glow": SubResource("Animation_aymfj")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4orjh"]
+size = Vector2(8, 10)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bnph7"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(16, 4, 1)
+gravity = Vector3(0, -50, 0)
+scale_min = 0.3
+scale_max = 0.4
+
+[node name="Potion" type="Node2D"]
+script = ExtResource("1_aymfj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(8, 8)
+texture = ExtResource("2_nulks")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+&"": SubResource("AnimationLibrary_uk8d5")
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(8, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_4orjh")
+
+[node name="SFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_nulks")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+self_modulate = Color(0, 0.788235, 1, 1)
+position = Vector2(8, 10.67)
+scale = Vector2(0.21, 0.21)
+amount = 16
+texture = ExtResource("4_uk8d5")
+lifetime = 0.6
+explosiveness = 0.41
+process_material = SubResource("ParticleProcessMaterial_bnph7")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(8, 14)
+scale = Vector2(1, 0.5)
+energy = 2.0
+range_z_min = 0
+range_z_max = 0
+texture = ExtResource("5_aymfj")
+texture_scale = 0.4

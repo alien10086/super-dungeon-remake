@@ -1,17 +1,51 @@
-[gd_scene load_steps=4 format=3 uid="uid://r875qqve1jf7"]
+[gd_scene load_steps=10 format=3 uid="uid://r875qqve1jf7"]
 
+[ext_resource type="Script" uid="uid://xp16pawoy5vf" path="res://Scenes/entities/Chest.cs" id="1_bnph7"]
 [ext_resource type="Texture2D" uid="uid://bpi3sle6tr2if" path="res://Assets/misc/chest.png" id="1_o1dsb"]
 [ext_resource type="AudioStream" uid="uid://cotdgfel7s5fc" path="res://Assets/sfx/coins.wav" id="2_4orjh"]
+[ext_resource type="Texture2D" uid="uid://ca08pkbybxnel" path="res://Assets/efx/4x4.png" id="3_jxjss"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4orjh"]
 size = Vector2(14, 11)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bnph7"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(16, 4, 1)
+gravity = Vector3(-50, -150, 0)
+
+[sub_resource type="Gradient" id="Gradient_jxjss"]
+offsets = PackedFloat32Array(0, 0.985401, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.372263, 0.372263, 0.372263, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bnph7"]
+gradient = SubResource("Gradient_jxjss")
+width = 2048
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8w0g7"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(7, 5, 1)
+inherit_velocity_ratio = 1.05
+gravity = Vector3(0, 20, 0)
+linear_accel_min = -15.78
+linear_accel_max = 0.539998
+tangential_accel_min = 23.81
+tangential_accel_max = 23.81
+scale_min = 0.15
+scale_max = 0.25
+color = Color(1, 1, 0.129412, 1)
+color_ramp = SubResource("GradientTexture1D_bnph7")
+
 [node name="Chest" type="Node2D"]
+script = ExtResource("1_bnph7")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(8, 8)
 texture = ExtResource("1_o1dsb")
 
 [node name="Area2D" type="Area2D" parent="."]
+position = Vector2(8, 8)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 0.5)
@@ -19,3 +53,26 @@ shape = SubResource("RectangleShape2D_4orjh")
 
 [node name="SFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_4orjh")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+self_modulate = Color(0.956863, 0.772549, 0.141176, 1)
+z_index = -1
+position = Vector2(8, 8)
+scale = Vector2(0.4, 0.3)
+emitting = false
+amount = 16
+texture = ExtResource("3_jxjss")
+lifetime = 0.6
+explosiveness = 0.41
+process_material = SubResource("ParticleProcessMaterial_bnph7")
+
+[node name="GPUParticles2D-Anim" type="GPUParticles2D" parent="."]
+light_mask = 0
+z_index = 1
+position = Vector2(8, 6)
+texture = ExtResource("3_jxjss")
+lifetime = 0.5
+speed_scale = 2.0
+randomness = 0.31
+collision_base_size = 0.0
+process_material = SubResource("ParticleProcessMaterial_8w0g7")

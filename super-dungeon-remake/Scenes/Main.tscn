@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://bqxvyxkwqwqxv"]
+[gd_scene load_steps=35 format=3 uid="uid://bqxvyxkwqwqxv"]
 
 [ext_resource type="Script" uid="uid://4mxiicvmr0yi" path="res://Scripts/UI/Main.cs" id="1_jw32o"]
 [ext_resource type="Theme" uid="uid://bkr48weqeivkq" path="res://Resources/theme.tres" id="2_idj7w"]
@@ -16,6 +16,9 @@
 [ext_resource type="PackedScene" uid="uid://8bygma1nwtyu" path="res://Scenes/Enemies/skel.tscn" id="13_h1m7h"]
 [ext_resource type="TileSet" path="res://Resources/dungeon-tiles.tres" id="15_erwvk"]
 [ext_resource type="Script" uid="uid://crbinxolsws2u" path="res://Scripts/Level/Map.cs" id="16_erwvk"]
+[ext_resource type="PackedScene" uid="uid://bxj57lsuskuug" path="res://Scenes/entities/Torch.tscn" id="17_0sclb"]
+[ext_resource type="PackedScene" uid="uid://r875qqve1jf7" path="res://Scenes/entities/Chest.tscn" id="18_sxkr1"]
+[ext_resource type="PackedScene" uid="uid://cyehxskrj0ptc" path="res://Scenes/entities/Potion.tscn" id="19_fq0cl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kln2b"]
 bg_color = Color(0.177812, 0.521885, 0.266302, 1)
@@ -393,3 +396,6 @@ MapScene = SubResource("PackedScene_2w5on")
 tile_set = ExtResource("15_erwvk")
 format = 2
 script = ExtResource("16_erwvk")
+TorchScene = ExtResource("17_0sclb")
+ChestScene = ExtResource("18_sxkr1")
+PotionScene = ExtResource("19_fq0cl")
