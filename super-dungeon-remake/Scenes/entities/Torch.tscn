@@ -33,7 +33,7 @@ script = ExtResource("1_58uhi")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_l1oi6")
-frame_progress = 0.00660189
+frame_progress = 0.495571
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(8, 19)
