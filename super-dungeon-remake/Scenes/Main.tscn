@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bqxvyxkwqwqxv"]
+[gd_scene load_steps=32 format=3 uid="uid://bqxvyxkwqwqxv"]
 
 [ext_resource type="Script" uid="uid://4mxiicvmr0yi" path="res://Scripts/UI/Main.cs" id="1_jw32o"]
 [ext_resource type="Theme" uid="uid://bkr48weqeivkq" path="res://Resources/theme.tres" id="2_idj7w"]
@@ -14,7 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://chxvipcxv5e82" path="res://Scenes/Enemies/goblin.tscn" id="12_1p5hy"]
 [ext_resource type="PackedScene" uid="uid://vj1evnn6pu67" path="res://Scenes/Enemies/slime.tscn" id="12_grg3l"]
 [ext_resource type="PackedScene" uid="uid://8bygma1nwtyu" path="res://Scenes/Enemies/skel.tscn" id="13_h1m7h"]
-[ext_resource type="PackedScene" uid="uid://cdltkvynal3y8" path="res://Scenes/Level/Map.tscn" id="15_h1m7h"]
+[ext_resource type="TileSet" path="res://Resources/dungeon-tiles.tres" id="15_erwvk"]
+[ext_resource type="Script" uid="uid://crbinxolsws2u" path="res://Scripts/Level/Map.cs" id="16_erwvk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kln2b"]
 bg_color = Color(0.177812, 0.521885, 0.266302, 1)
@@ -226,6 +227,19 @@ _data = {
 &"select_resume": SubResource("Animation_50glp")
 }
 
+[sub_resource type="PackedScene" id="PackedScene_2w5on"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("Map", "tile_set", "format", "script", "TileMap"),
+"node_count": 1,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 4, 0, -1, 3, 1, 0, 2, 1, 3, 2, 0),
+"variants": [ExtResource("15_erwvk"), 2, ExtResource("16_erwvk")],
+"version": 3
+}
+
 [node name="Main" type="Node"]
 script = ExtResource("1_jw32o")
 
@@ -373,4 +387,9 @@ script = ExtResource("9_bmxlf")
 script = ExtResource("10_4kpch")
 PlayerScene = ExtResource("11_4kpch")
 EnemyScenes = Array[PackedScene]([ExtResource("12_1p5hy"), ExtResource("13_h1m7h"), ExtResource("12_grg3l")])
-MapScene = ExtResource("15_h1m7h")
+MapScene = SubResource("PackedScene_2w5on")
+
+[node name="Map" type="TileMap" parent="."]
+tile_set = ExtResource("15_erwvk")
+format = 2
+script = ExtResource("16_erwvk")
