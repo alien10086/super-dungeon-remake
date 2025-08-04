@@ -64,7 +64,7 @@ public partial class Map : TileMap
         // LoadDefaultScenes();
         
         // 生成整个关卡
-        GenerateLevel();
+        // GenerateLevel();
     }
     #endregion
     

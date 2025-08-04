@@ -22,6 +22,8 @@ public partial class LevelGenerator : Node
     /// 随机数生成器
     /// </summary>
     private RandomNumberGenerator _rng;
+
+    [Export] public TileMap WorkerTileMap { get; set; }
     
     /// <summary>
     /// 生成统计信息
@@ -50,6 +52,8 @@ public partial class LevelGenerator : Node
         _rng = new RandomNumberGenerator();
         _rng.Randomize();
         Stats = new GenerationStats();
+
+        GenerateLevel(WorkerTileMap);
     }
     #endregion
     
