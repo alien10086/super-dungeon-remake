@@ -61,7 +61,7 @@ public partial class Map : TileMap
         AllRooms.Clear();
         
         // 加载默认场景资源（如果没有在编辑器中设置）
-        LoadDefaultScenes();
+        // LoadDefaultScenes();
         
         // 生成整个关卡
         GenerateLevel();
