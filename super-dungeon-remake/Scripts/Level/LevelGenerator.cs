@@ -190,24 +190,27 @@ public partial class LevelGenerator : Node
         var pointA = roomA.Center;
         var pointB = roomB.Center;
         
+        // Random corridor width between 2 and 4
+        var corridorWidth = _rng.RandiRange(2, 4);
+        
         // Create L-shaped corridor
         if (_rng.Randf() > 0.5f)
         {
             // Horizontal first, then vertical
             var horizontalWidth = Math.Abs((int)(pointB.X - pointA.X)) + 1;
             var verticalHeight = Math.Abs((int)(pointB.Y - pointA.Y)) + 1;
-            GD.Print($"水平走廊: ({pointA.X}, {pointA.Y}) 到 ({pointB.X}, {pointB.Y}) 宽度: {horizontalWidth}, 高度: {verticalHeight}");
-            FillCellsFloor(tileMap, Math.Min((int)pointA.X, (int)pointB.X), (int)pointA.Y, horizontalWidth, 2);
-            FillCellsFloor(tileMap, (int)pointB.X, Math.Min((int)pointA.Y, (int)pointB.Y), 2, verticalHeight);
+            GD.Print($"水平走廊: ({pointA.X}, {pointA.Y}) 到 ({pointB.X}, {pointB.Y}) 宽度: {horizontalWidth}, 高度: {verticalHeight}, 走廊宽度: {corridorWidth}");
+            FillCellsFloor(tileMap, Math.Min((int)pointA.X, (int)pointB.X), (int)pointA.Y, horizontalWidth, corridorWidth);
+            FillCellsFloor(tileMap, (int)pointB.X, Math.Min((int)pointA.Y, (int)pointB.Y), corridorWidth, verticalHeight);
         }
         else
         {
             // Vertical first, then horizontal
             var verticalHeight = Math.Abs((int)(pointB.Y - pointA.Y)) + 1;
             var horizontalWidth = Math.Abs((int)(pointB.X - pointA.X)) + 1;
-            GD.Print($"垂直走廊: ({pointA.X}, {pointA.Y}) 到 ({pointB.X}, {pointB.Y}) 宽度: {horizontalWidth}, 高度: {verticalHeight}");
-            FillCellsFloor(tileMap, (int)pointA.X, Math.Min((int)pointA.Y, (int)pointB.Y), 2, verticalHeight);
-            FillCellsFloor(tileMap, Math.Min((int)pointA.X, (int)pointB.X), (int)pointB.Y, horizontalWidth, 2);
+            GD.Print($"垂直走廊: ({pointA.X}, {pointA.Y}) 到 ({pointB.X}, {pointB.Y}) 宽度: {horizontalWidth}, 高度: {verticalHeight}, 走廊宽度: {corridorWidth}");
+            FillCellsFloor(tileMap, (int)pointA.X, Math.Min((int)pointA.Y, (int)pointB.Y), corridorWidth, verticalHeight);
+            FillCellsFloor(tileMap, Math.Min((int)pointA.X, (int)pointB.X), (int)pointB.Y, horizontalWidth, corridorWidth);
         }
     }
     
