@@ -244,7 +244,7 @@ public partial class LevelGenerator : Node
             for (int x = left; x < left + width; x++)
             {
                 var atlasCoords = new Vector2I(_rng.RandiRange(0, 3), _rng.RandiRange(0, 2));
-                tileMap.SetCell(0, new Vector2I(x, y), 0, atlasCoords);
+                tileMap.SetCell(0, new Vector2I(x, y), GlobalConstants.TileIdxFloor, atlasCoords);
             }
         }
     }
