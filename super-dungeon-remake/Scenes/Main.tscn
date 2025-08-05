@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://chxvipcxv5e82" path="res://Scenes/Enemies/goblin.tscn" id="12_1p5hy"]
 [ext_resource type="PackedScene" uid="uid://vj1evnn6pu67" path="res://Scenes/Enemies/slime.tscn" id="12_grg3l"]
 [ext_resource type="PackedScene" uid="uid://8bygma1nwtyu" path="res://Scenes/Enemies/skel.tscn" id="13_h1m7h"]
-[ext_resource type="TileSet" path="res://Resources/dungeon-tiles.tres" id="15_erwvk"]
+[ext_resource type="TileSet" uid="uid://cprijvq51imhn" path="res://Resources/dungeon-tiles.tres" id="15_erwvk"]
 [ext_resource type="Script" uid="uid://crbinxolsws2u" path="res://Scripts/Level/Map.cs" id="16_erwvk"]
 [ext_resource type="Script" uid="uid://bv6t1rhlt0dfv" path="res://Scripts/Level/LevelGenerator.cs" id="17_sxkr1"]
 [ext_resource type="Script" uid="uid://cfeaqun7254x2" path="res://Scripts/Core/EnemySpawner.cs" id="18_346fj"]
@@ -398,10 +398,6 @@ WorkerTileMap = NodePath("../../TileMap")
 [node name="EnemySpawner" type="Node" parent="GameContainer"]
 script = ExtResource("18_346fj")
 EnemyScene = ExtResource("12_1p5hy")
-
-[node name="Map" type="TileMap" parent="."]
-tile_set = ExtResource("15_erwvk")
-format = 2
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("15_erwvk")

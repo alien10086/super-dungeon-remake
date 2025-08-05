@@ -39,7 +39,8 @@ public class BSPNode
         if (!IsLeaf)
             return false;
             
-        if (Depth >= GlobalConstants.MaxDepth || Width <= 0 || Height <= 0)
+        // 增加最小分割尺寸要求，确保分割后的区域足够大
+        if (Depth >= GlobalConstants.MaxDepth || Width < 16 || Height < 16)
             return false;
             
         bool splitHorizontally;
@@ -85,26 +86,28 @@ public class BSPNode
             return;
             
         // 确保有足够的空间创建房间
-        if (Width < 4 || Height < 4)
+        if (Width < 8 || Height < 8)
             return;
             
-        var minRoomSize = 3;
-        var maxRoomWidth = Mathf.Max(minRoomSize, Width - 2);
-        var maxRoomHeight = Mathf.Max(minRoomSize, Height - 2);
+        var minRoomSize = 6; // 增加最小房间尺寸
+        var maxRoomWidth = Mathf.Max(minRoomSize, Width - 4); // 留更多边距
+        var maxRoomHeight = Mathf.Max(minRoomSize, Height - 4);
         
+        // 确保房间不会太小
+        if (maxRoomWidth < minRoomSize || maxRoomHeight < minRoomSize)
+            return;
+            
         var roomWidth = _rng.RandiRange(minRoomSize, maxRoomWidth);
         var roomHeight = _rng.RandiRange(minRoomSize, maxRoomHeight);
         
-        var maxLeft = Mathf.Max(1, Width - roomWidth - 1);
-        var maxTop = Mathf.Max(1, Height - roomHeight - 1);
+        // 计算房间位置，确保有边距
+        var maxLeft = Mathf.Max(0, Width - roomWidth - 2);
+        var maxTop = Mathf.Max(0, Height - roomHeight - 2);
         
-        var roomLeft = Left + _rng.RandiRange(1, maxLeft);
-        var roomTop = Top + _rng.RandiRange(1, maxTop);
+        var roomLeft = Left + _rng.RandiRange(2, Mathf.Max(2, maxLeft + 2));
+        var roomTop = Top + _rng.RandiRange(2, Mathf.Max(2, maxTop + 2));
         
-        if (roomWidth >= minRoomSize && roomHeight >= minRoomSize)
-        {
-            Room = new Room(roomLeft, roomTop, roomWidth, roomHeight);
-        }
+        Room = new Room(roomLeft, roomTop, roomWidth, roomHeight);
     }
     
     public Room GetRoom()

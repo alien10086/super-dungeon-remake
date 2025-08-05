@@ -35,8 +35,7 @@ public partial class GameManager : Node
 			return;
 		}
 		
-		LevelGenerator = new LevelGenerator();
-		AddChild(LevelGenerator);
+		LevelGenerator = GetNode<LevelGenerator>("../LevelGen");
 		
 		EnemySpawner = GetNode<EnemySpawner>("../EnemySpawner");
 		EnemySpawner.Initialize(LevelGenerator);
