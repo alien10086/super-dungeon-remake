@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SuperDungeonRemake.Utils;
@@ -193,21 +194,27 @@ public partial class LevelGenerator : Node
         if (_rng.Randf() > 0.5f)
         {
             // Horizontal first, then vertical
-            FillCells(tileMap, (int)pointA.X, (int)pointA.Y, (int)(pointB.X - pointA.X), 1, GlobalConstants.TileIdxFloor);
-            FillCells(tileMap, (int)pointB.X, (int)pointA.Y, 1, (int)(pointB.Y - pointA.Y), GlobalConstants.TileIdxFloor);
+            var horizontalWidth = Math.Abs((int)(pointB.X - pointA.X)) + 1;
+            var verticalHeight = Math.Abs((int)(pointB.Y - pointA.Y)) + 1;
+            GD.Print($"水平走廊: ({pointA.X}, {pointA.Y}) 到 ({pointB.X}, {pointB.Y}) 宽度: {horizontalWidth}, 高度: {verticalHeight}");
+            FillCellsFloor(tileMap, Math.Min((int)pointA.X, (int)pointB.X), (int)pointA.Y, horizontalWidth, 2);
+            FillCellsFloor(tileMap, (int)pointB.X, Math.Min((int)pointA.Y, (int)pointB.Y), 2, verticalHeight);
         }
         else
         {
             // Vertical first, then horizontal
-            FillCells(tileMap, (int)pointA.X, (int)pointA.Y, 1, (int)(pointB.Y - pointA.Y), GlobalConstants.TileIdxFloor);
-            FillCells(tileMap, (int)pointA.X, (int)pointB.Y, (int)(pointB.X - pointA.X), 1, GlobalConstants.TileIdxFloor);
+            var verticalHeight = Math.Abs((int)(pointB.Y - pointA.Y)) + 1;
+            var horizontalWidth = Math.Abs((int)(pointB.X - pointA.X)) + 1;
+            GD.Print($"垂直走廊: ({pointA.X}, {pointA.Y}) 到 ({pointB.X}, {pointB.Y}) 宽度: {horizontalWidth}, 高度: {verticalHeight}");
+            FillCellsFloor(tileMap, (int)pointA.X, Math.Min((int)pointA.Y, (int)pointB.Y), 2, verticalHeight);
+            FillCellsFloor(tileMap, Math.Min((int)pointA.X, (int)pointB.X), (int)pointB.Y, horizontalWidth, 2);
         }
     }
     
     private void RenderMap(TileMap tileMap)
     {
         // Clear the tilemap
-        tileMap.Clear();
+        // tileMap.Clear();
         
         // Fill rooms with floor tiles
         foreach (var room in AllRooms)
@@ -220,7 +227,7 @@ public partial class LevelGenerator : Node
         // AddWalls(tileMap);
     }
     
-    private void FillCells(TileMap tileMap, int left, int top, int width, int height, int tileIdx)
+    private void FillCells(TileMap tileMap, int left, int top, int width, int height, Vector2I tileCoords)
     {
         if (tileMap == null)
         {
@@ -232,10 +239,10 @@ public partial class LevelGenerator : Node
         {
             for (int x = left; x < left + width; x++)
             {
-                tileMap.SetCell(0, new Vector2I(x, y), 0, new Vector2I(tileIdx, 0));
+                tileMap.SetCell(0, new Vector2I(x, y), GlobalConstants.TileIdxFloor, tileCoords);
             }
         }
-    }
+}
     
     private void FillCellsFloor(TileMap tileMap, int left, int top, int width, int height)
     {
