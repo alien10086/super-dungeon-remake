@@ -7,7 +7,7 @@ public static class GlobalConstants
     public const int GridSize = 16;
     public const int MapSize = 100;
     
-    public const int MaxDepth = 3; // 减少分割深度，避免房间过小
+    public const int MaxDepth = 2; // 进一步减少分割深度，生成更大房间
     public const float SplitPercentage = 0.3f;
     
     // Tile indices

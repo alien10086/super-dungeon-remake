@@ -82,16 +82,16 @@ public partial class LevelGenerator : Node
         GenerateRooms(rootNode);
         
         // 生成走廊连接房间
-        GenerateCorridors(rootNode, tileMap);
+        // GenerateCorridors(rootNode, tileMap);
         
         // 渲染地图
         RenderMap(tileMap);
         
         // 添加装饰元素
-        AddDecorations(tileMap);
+        // AddDecorations(tileMap);
         
         // 优化地图布局
-        OptimizeLayout(tileMap);
+        // OptimizeLayout(tileMap);
         
         // 更新统计信息
         UpdateGenerationStats(startTime);
@@ -212,6 +212,7 @@ public partial class LevelGenerator : Node
         // Fill rooms with floor tiles
         foreach (var room in AllRooms)
         {
+            GD.Print($"房间: ({room.Left}, {room.Top}) 尺寸: {room.Width}x{room.Height}");
             FillCellsFloor(tileMap, room.Left, room.Top, room.Width, room.Height);
         }
         

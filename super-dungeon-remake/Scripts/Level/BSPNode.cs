@@ -40,7 +40,7 @@ public class BSPNode
             return false;
             
         // 增加最小分割尺寸要求，确保分割后的区域足够大
-        if (Depth >= GlobalConstants.MaxDepth || Width < 16 || Height < 16)
+        if (Depth >= GlobalConstants.MaxDepth || Width < 24 || Height < 24)
             return false;
             
         bool splitHorizontally;
@@ -86,10 +86,10 @@ public class BSPNode
             return;
             
         // 确保有足够的空间创建房间
-        if (Width < 8 || Height < 8)
+        if (Width < 12 || Height < 12)
             return;
             
-        var minRoomSize = 6; // 增加最小房间尺寸
+        var minRoomSize = 10; // 进一步增加最小房间尺寸
         var maxRoomWidth = Mathf.Max(minRoomSize, Width - 4); // 留更多边距
         var maxRoomHeight = Mathf.Max(minRoomSize, Height - 4);
         
