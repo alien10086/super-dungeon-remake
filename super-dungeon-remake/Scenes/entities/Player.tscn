@@ -65,16 +65,18 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1hdqx"]
-size = Vector2(22, 31)
+size = Vector2(8, 14)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 position = Vector2(1, 3)
 script = ExtResource("1_0hdqv")
+MaxZoom = 100.0
+ZoomSpeed = 1.0
 WeaponScene = ExtResource("2_17kvo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 100
-scale = Vector2(4.02, 4.02)
+position = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_glx4g")
 animation = &"walk"
 frame_progress = 0.601
@@ -82,11 +84,11 @@ frame_progress = 0.601
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(0, 19)
+position = Vector2(8, 13)
 shape = SubResource("RectangleShape2D_1hdqx")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(8, 8)
 energy = 0.1
 range_item_cull_mask = 4
 texture = ExtResource("3_gntrk")
@@ -105,11 +107,10 @@ stream = ExtResource("14_0sx8c")
 stream = ExtResource("15_rso1h")
 
 [node name="AttackArea" type="Area2D" parent="."]
-visible = false
 position = Vector2(0, 2)
 
 [node name="AttackCollision" type="CollisionShape2D" parent="AttackArea"]
-position = Vector2(-1, 16.5)
+position = Vector2(8, 11)
 shape = SubResource("RectangleShape2D_1hdqx")
 disabled = true
 debug_color = Color(0.853714, 0.020812, 0.543438, 1)

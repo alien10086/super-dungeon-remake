@@ -217,7 +217,7 @@ public partial class LevelGenerator : Node
         }
         
         // Add walls around floors
-        AddWalls(tileMap);
+        // AddWalls(tileMap);
     }
     
     private void FillCells(TileMap tileMap, int left, int top, int width, int height, int tileIdx)
