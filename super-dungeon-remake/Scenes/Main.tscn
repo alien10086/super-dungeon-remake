@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bqxvyxkwqwqxv"]
+[gd_scene load_steps=34 format=3 uid="uid://bqxvyxkwqwqxv"]
 
 [ext_resource type="Script" uid="uid://4mxiicvmr0yi" path="res://Scripts/UI/Main.cs" id="1_jw32o"]
 [ext_resource type="Theme" uid="uid://bkr48weqeivkq" path="res://Resources/theme.tres" id="2_idj7w"]
@@ -17,6 +17,7 @@
 [ext_resource type="TileSet" path="res://Resources/dungeon-tiles.tres" id="15_erwvk"]
 [ext_resource type="Script" uid="uid://crbinxolsws2u" path="res://Scripts/Level/Map.cs" id="16_erwvk"]
 [ext_resource type="Script" uid="uid://bv6t1rhlt0dfv" path="res://Scripts/Level/LevelGenerator.cs" id="17_sxkr1"]
+[ext_resource type="Script" uid="uid://cfeaqun7254x2" path="res://Scripts/Core/EnemySpawner.cs" id="18_346fj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kln2b"]
 bg_color = Color(0.177812, 0.521885, 0.266302, 1)
@@ -393,6 +394,10 @@ MapScene = SubResource("PackedScene_2w5on")
 [node name="LevelGen" type="Node" parent="GameContainer" node_paths=PackedStringArray("WorkerTileMap")]
 script = ExtResource("17_sxkr1")
 WorkerTileMap = NodePath("../../TileMap")
+
+[node name="EnemySpawner" type="Node" parent="GameContainer"]
+script = ExtResource("18_346fj")
+EnemyScene = ExtResource("12_1p5hy")
 
 [node name="Map" type="TileMap" parent="."]
 tile_set = ExtResource("15_erwvk")

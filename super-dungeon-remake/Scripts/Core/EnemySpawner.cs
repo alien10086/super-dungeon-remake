@@ -42,7 +42,7 @@ public partial class EnemySpawner : Node
         // 如果没有设置敌人场景，尝试加载默认场景
         if (EnemyScene == null)
         {
-            EnemyScene = GD.Load<PackedScene>("res://Scenes/Enemies/Enemy.tscn");
+            EnemyScene = GD.Load<PackedScene>("res://Scenes/Enemies/goblin.tscn");
         }
     }
     #endregion
