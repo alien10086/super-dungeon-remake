@@ -35,15 +35,19 @@ public partial class EnemySpawner : Node
         _rng = new RandomNumberGenerator();
         _rng.Randomize();
         
-        // 获取关卡生成器引用
-        var gameManager = GetNode<GameManager>("/root/Main/GameContainer/GameManage");
-        _levelGenerator = gameManager.LevelGenerator;
-        
         // 如果没有设置敌人场景，尝试加载默认场景
         if (EnemyScene == null)
         {
             EnemyScene = GD.Load<PackedScene>("res://Scenes/Enemies/goblin.tscn");
         }
+    }
+    
+    /// <summary>
+    /// 初始化关卡生成器引用
+    /// </summary>
+    public void Initialize(LevelGenerator levelGenerator)
+    {
+        _levelGenerator = levelGenerator;
     }
     #endregion
     
@@ -76,8 +80,8 @@ public partial class EnemySpawner : Node
         // 设置位置
         enemy.Position = position;
         
-        // 添加到场景树
-        GetTree().CurrentScene.AddChild(enemy);
+        // 添加到场景树（使用延迟调用避免阻塞）
+        GetTree().CurrentScene.CallDeferred(Node.MethodName.AddChild, enemy);
         
         // 添加到敌人组
         enemy.AddToGroup(GlobalConstants.GroupNames.ENEMIES);
@@ -179,6 +183,13 @@ public partial class EnemySpawner : Node
     /// <returns>敌人类型</returns>
     private EnemyType GetRandomEnemyTypeForLevel(int levelDepth)
     {
+        // 确保随机数生成器已初始化
+        if (_rng == null)
+        {
+            _rng = new RandomNumberGenerator();
+            _rng.Randomize();
+        }
+        
         // 根据关卡深度调整敌人类型概率
         var random = _rng.Randf();
         
