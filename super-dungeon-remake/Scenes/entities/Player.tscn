@@ -73,6 +73,7 @@ script = ExtResource("1_0hdqv")
 WeaponScene = ExtResource("2_17kvo")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 100
 scale = Vector2(4.02, 4.02)
 sprite_frames = SubResource("SpriteFrames_glx4g")
 animation = &"walk"
