@@ -82,7 +82,7 @@ public partial class LevelGenerator : Node
         GenerateRooms(rootNode);
         
         // 生成走廊连接房间
-        // GenerateCorridors(rootNode, tileMap);
+        GenerateCorridors(rootNode, tileMap);
         
         // 渲染地图
         RenderMap(tileMap);
