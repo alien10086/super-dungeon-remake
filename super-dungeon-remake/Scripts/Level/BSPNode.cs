@@ -39,8 +39,8 @@ public class BSPNode
         if (!IsLeaf)
             return false;
             
-        // 增加最小分割尺寸要求，确保分割后的区域足够大
-        if (Depth >= GlobalConstants.MaxDepth || Width < 24 || Height < 24)
+        // 进一步降低最小分割尺寸要求，在更大地图上生成更多房间
+        if (Depth >= GlobalConstants.MaxDepth || Width < 12 || Height < 12)
             return false;
             
         bool splitHorizontally;
