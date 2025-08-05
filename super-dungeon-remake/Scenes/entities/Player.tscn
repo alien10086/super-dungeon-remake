@@ -78,6 +78,8 @@ sprite_frames = SubResource("SpriteFrames_glx4g")
 animation = &"walk"
 frame_progress = 0.601
 
+[node name="Camera2D" type="Camera2D" parent="."]
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(0, 19)

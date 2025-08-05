@@ -64,7 +64,12 @@ public partial class PlayerController : CombatEntity
     {
         if (_camera != null)
         {
-            _camera.Zoom = Vector2.One * CameraZoomFactor;
+            // 根据屏幕 DPI 自动调整相机缩放比例
+            var currentScreen = DisplayServer.WindowGetCurrentScreen();
+            var screenDpi = DisplayServer.ScreenGetDpi(currentScreen);
+            var zoomFactor = screenDpi / 480.0f;
+            
+            _camera.Zoom = new Vector2(zoomFactor, zoomFactor);
             _camera.Enabled = true;
         }
     }
