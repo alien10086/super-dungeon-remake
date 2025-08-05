@@ -53,6 +53,12 @@ public partial class LevelGenerator : Node
         _rng.Randomize();
         Stats = new GenerationStats();
 
+        if (WorkerTileMap == null)
+        {
+            GD.PrintErr("WorkerTileMap is not set in LevelGenerator. Please assign it in the scene.");
+            return;
+        }
+
         GenerateLevel(WorkerTileMap);
     }
     #endregion
@@ -215,6 +221,12 @@ public partial class LevelGenerator : Node
     
     private void FillCells(TileMap tileMap, int left, int top, int width, int height, int tileIdx)
     {
+        if (tileMap == null)
+        {
+            GD.PrintErr("TileMap is null in FillCells method");
+            return;
+        }
+        
         for (int y = top; y < top + height; y++)
         {
             for (int x = left; x < left + width; x++)
