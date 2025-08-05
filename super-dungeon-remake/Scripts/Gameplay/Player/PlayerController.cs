@@ -13,6 +13,9 @@ public partial class PlayerController : CombatEntity
 {
     [Export] public float RecoilDuration { get; set; } = 0.2f;
     [Export] public float CameraZoomFactor { get; set; } = 1.0f;
+    [Export] public float MinZoom { get; set; } = 0.5f;
+    [Export] public float MaxZoom { get; set; } = 3.0f;
+    [Export] public float ZoomSpeed { get; set; } = 0.1f;
     
     [Signal]
     public delegate void HealthChangedEventHandler(int currentHealth, int maxHealth);
@@ -32,6 +35,7 @@ public partial class PlayerController : CombatEntity
     private AudioStreamPlayer2D _swipeSfx;
     
     private int _currentGold;
+    private float _currentZoom = 1.0f;
     
     #region Godot Lifecycle
     protected override void InitializeEntity()
@@ -67,11 +71,24 @@ public partial class PlayerController : CombatEntity
             // 根据屏幕 DPI 自动调整相机缩放比例
             var currentScreen = DisplayServer.WindowGetCurrentScreen();
             var screenDpi = DisplayServer.ScreenGetDpi(currentScreen);
-            var zoomFactor = screenDpi / 480.0f;
+            var basezoomFactor = screenDpi / 480.0f;
             
-            _camera.Zoom = new Vector2(zoomFactor, zoomFactor);
+            _currentZoom = basezoomFactor;
+            _camera.Zoom = new Vector2(_currentZoom, _currentZoom);
             _camera.Enabled = true;
         }
+    }
+    
+    /// <summary>
+    /// 缩放相机
+    /// </summary>
+    /// <param name="zoomDelta">缩放增量</param>
+    private void ZoomCamera(float zoomDelta)
+    {
+        if (_camera == null) return;
+        
+        _currentZoom = Mathf.Clamp(_currentZoom + zoomDelta, MinZoom, MaxZoom);
+        _camera.Zoom = new Vector2(_currentZoom, _currentZoom);
     }
     
     /// <summary>
@@ -152,6 +169,19 @@ public partial class PlayerController : CombatEntity
     /// <param name="event">输入事件</param>
     private void HandleInput(InputEvent @event)
     {
+        // 处理鼠标滚轮缩放
+         if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
+         {
+             if (mouseEvent.ButtonIndex == MouseButton.WheelUp)
+             {
+                 ZoomCamera(ZoomSpeed);
+             }
+             else if (mouseEvent.ButtonIndex == MouseButton.WheelDown)
+             {
+                 ZoomCamera(-ZoomSpeed);
+             }
+         }
+        
         // 处理特殊输入（如暂停、截图等）
         if (@event.IsActionPressed("pause"))
         {
