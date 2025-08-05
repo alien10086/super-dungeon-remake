@@ -38,7 +38,7 @@ public partial class GameManager : Node
 		LevelGenerator = new LevelGenerator();
 		AddChild(LevelGenerator);
 		
-		EnemySpawner = GetNode<EnemySpawner>("EnemySpawner");
+		EnemySpawner = GetNode<EnemySpawner>("../EnemySpawner");
 		
 		_hud = GetNode<CanvasLayer>("/root/Main/HUD");
 		
