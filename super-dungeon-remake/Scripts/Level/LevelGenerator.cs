@@ -227,7 +227,7 @@ public partial class LevelGenerator : Node
         }
         
         // Add walls around floors
-        // AddWalls(tileMap);
+        AddWalls(tileMap);
     }
     
     private void FillCells(TileMap tileMap, int left, int top, int width, int height, Vector2I tileCoords)
@@ -268,50 +268,106 @@ public partial class LevelGenerator : Node
                 var currentCell = tileMap.GetCellSourceId(0, new Vector2I(x, y));
                 if (currentCell == -1) // Empty cell
                 {
-                    // Check if adjacent to floor
-                    if (IsAdjacentToFloor(tileMap, x, y))
+                    // 特殊处理：避免1格厚度的墙壁
+                    // 水平方向：左右都是地板时，填充为地板而非墙壁
+                    if (tileMap.GetCellSourceId(0, new Vector2I(x - 1, y)) != -1 && 
+                        tileMap.GetCellSourceId(0, new Vector2I(x + 1, y)) != -1)
                     {
-                        var atlasCoords = GetWallTileCoords(tileMap, x, y);
+                        tileMap.SetCell(0, new Vector2I(x, y), 0, new Vector2I(1, 1)); // 地板瓦片
+                        continue;
+                    }
+                    
+                    // 垂直方向：上下都是地板时，填充为地板而非墙壁
+                    if (tileMap.GetCellSourceId(0, new Vector2I(x, y - 1)) != -1 && 
+                        tileMap.GetCellSourceId(0, new Vector2I(x, y + 1)) != -1)
+                    {
+                        tileMap.SetCell(0, new Vector2I(x, y), 0, new Vector2I(1, 1)); // 地板瓦片
+                        continue;
+                    }
+                    
+                    // 四个基本方向的墙壁检测（按优先级）
+                    // 南墙（下方是地板）
+                    if (tileMap.GetCellSourceId(0, new Vector2I(x, y + 1)) != -1)
+                    {
+                        var atlasCoords = new Vector2I(_rng.RandiRange(1, 4), 0);
                         tileMap.SetCell(0, new Vector2I(x, y), 0, atlasCoords);
+                        
+                        // 20%概率添加火把装饰
+                        if (_rng.Randf() <= 0.2f)
+                        {
+                            // 这里可以添加火把生成逻辑
+                            // AddTorch(x, y);
+                        }
+                        continue;
+                    }
+                    
+                    // 北墙（上方是地板）- 特殊透视处理
+                    if (tileMap.GetCellSourceId(0, new Vector2I(x, y - 1)) != -1)
+                    {
+                        Vector2I atlasCoords;
+                        if (tileMap.GetCellSourceId(0, new Vector2I(x - 1, y)) != -1)
+                        {
+                            atlasCoords = new Vector2I(0, 5); // 左侧有地板的北墙
+                        }
+                        else if (tileMap.GetCellSourceId(0, new Vector2I(x + 1, y)) != -1)
+                        {
+                            atlasCoords = new Vector2I(5, 5); // 右侧有地板的北墙
+                        }
+                        else
+                        {
+                            atlasCoords = new Vector2I(_rng.RandiRange(1, 4), 4); // 普通北墙
+                        }
+                        tileMap.SetCell(0, new Vector2I(x, y), 0, atlasCoords);
+                        continue;
+                    }
+                    
+                    // 东墙（右侧是地板）
+                    if (tileMap.GetCellSourceId(0, new Vector2I(x + 1, y)) != -1)
+                    {
+                        var atlasCoords = new Vector2I(0, _rng.RandiRange(0, 3));
+                        tileMap.SetCell(0, new Vector2I(x, y), 0, atlasCoords);
+                        continue;
+                    }
+                    
+                    // 西墙（左侧是地板）
+                    if (tileMap.GetCellSourceId(0, new Vector2I(x - 1, y)) != -1)
+                    {
+                        var atlasCoords = new Vector2I(5, _rng.RandiRange(0, 3));
+                        tileMap.SetCell(0, new Vector2I(x, y), 0, atlasCoords);
+                        continue;
+                    }
+                    
+                    // 对角线方向的墙壁检测
+                    if (tileMap.GetCellSourceId(0, new Vector2I(x + 1, y - 1)) != -1)
+                    {
+                        tileMap.SetCell(0, new Vector2I(x, y), 0, new Vector2I(0, 4));
+                        continue;
+                    }
+                    
+                    if (tileMap.GetCellSourceId(0, new Vector2I(x - 1, y - 1)) != -1)
+                    {
+                        tileMap.SetCell(0, new Vector2I(x, y), 0, new Vector2I(5, 4));
+                        continue;
+                    }
+                    
+                    if (tileMap.GetCellSourceId(0, new Vector2I(x + 1, y + 1)) != -1)
+                    {
+                        tileMap.SetCell(0, new Vector2I(x, y), 0, new Vector2I(0, 0));
+                        continue;
+                    }
+                    
+                    if (tileMap.GetCellSourceId(0, new Vector2I(x - 1, y + 1)) != -1)
+                    {
+                        tileMap.SetCell(0, new Vector2I(x, y), 0, new Vector2I(5, 0));
+                        continue;
                     }
                 }
             }
         }
     }
     
-    private bool IsAdjacentToFloor(TileMap tileMap, int x, int y)
-    {
-        var directions = new Vector2I[]
-        {
-            new(0, 1), new(0, -1), new(1, 0), new(-1, 0),
-            new(1, 1), new(1, -1), new(-1, 1), new(-1, -1)
-        };
-        
-        foreach (var dir in directions)
-        {
-            if (tileMap.GetCellSourceId(0, new Vector2I(x + dir.X, y + dir.Y)) != -1)
-            {
-                return true;
-            }
-        }
-        
-        return false;
-    }
+
     
-    private Vector2I GetWallTileCoords(TileMap tileMap, int x, int y)
-    {
-        // Simplified wall tile selection - can be enhanced later
-        if (tileMap.GetCellSourceId(0, new Vector2I(x, y + 1)) != -1)
-            return new Vector2I(_rng.RandiRange(1, 4), 0); // North wall
-        if (tileMap.GetCellSourceId(0, new Vector2I(x, y - 1)) != -1)
-            return new Vector2I(_rng.RandiRange(1, 4), 4); // South wall
-        if (tileMap.GetCellSourceId(0, new Vector2I(x + 1, y)) != -1)
-            return new Vector2I(0, _rng.RandiRange(0, 3)); // West wall
-        if (tileMap.GetCellSourceId(0, new Vector2I(x - 1, y)) != -1)
-            return new Vector2I(5, _rng.RandiRange(0, 3)); // East wall
-            
-        return new Vector2I(1, 1); // Default wall
-    }
     
     private void AddDecorations(TileMap tileMap)
     {
