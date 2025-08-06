@@ -42,13 +42,13 @@ public partial class LevelGenerator : Node
     #region Godot Lifecycle
     public override void _Ready()
     {
-        InitializeGenerator();
+        // InitializeGenerator();
     }
     
     /// <summary>
     /// 初始化生成器
     /// </summary>
-    private void InitializeGenerator()
+    public void InitializeGenerator()
     {
         _rng = new RandomNumberGenerator();
         _rng.Randomize();

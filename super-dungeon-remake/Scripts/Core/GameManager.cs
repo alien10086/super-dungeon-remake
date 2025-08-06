@@ -72,10 +72,18 @@ public partial class GameManager : Node
 		}
 		
 		// Create new map
-		CurrentMap = MapScene.Instantiate<Node2D>();
-		AddChild(CurrentMap);
+		// CurrentMap = MapScene.Instantiate<Node2D>();
+		// AddChild(CurrentMap);
 		
 		// Create player if doesn't exist
+		// if (CurrentPlayer == null)
+		// {
+		// 	CurrentPlayer = PlayerScene.Instantiate<PlayerController>();
+		// 	AddChild(CurrentPlayer);
+		// }
+
+		LevelGenerator.InitializeGenerator();
+
 		if (CurrentPlayer == null)
 		{
 			CurrentPlayer = PlayerScene.Instantiate<PlayerController>();
@@ -102,12 +110,20 @@ public partial class GameManager : Node
 	{
 		if (CurrentPlayer != null && LevelGenerator.AllRooms.Count > 0)
 		{
+			// 选择一个随机房间
 			var randomRoom = LevelGenerator.AllRooms[GD.RandRange(0, LevelGenerator.AllRooms.Count - 1)];
+			
+			// 获取房间内的随机地板位置
+			var floorCell = LevelGenerator.GetRandomFloorCell(randomRoom);
+			
+			// 将网格坐标转换为世界坐标，并确保玩家在瓦片中心
 			var playerPos = new Vector2(
-				randomRoom.Left * GlobalConstants.GridSize + randomRoom.Width * GlobalConstants.GridSize / 2,
-				randomRoom.Top * GlobalConstants.GridSize + randomRoom.Height * GlobalConstants.GridSize / 2
+				floorCell.X * GlobalConstants.GridSize + GlobalConstants.GridSize / 2,
+				floorCell.Y * GlobalConstants.GridSize + GlobalConstants.GridSize / 2
 			);
+			
 			CurrentPlayer.Position = playerPos;
+			GD.Print($"玩家生成位置: {playerPos}, 房间: ({randomRoom.Left}, {randomRoom.Top}) 尺寸: {randomRoom.Width}x{randomRoom.Height}");
 		}
 	}
 	
